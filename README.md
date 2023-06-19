@@ -1,22 +1,21 @@
-# create-svelte
+# UI-starter
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Start building your own Svelte application using Nuclia’s search capabilities and UI tools.
 
-## Creating a project
+## Installation
 
-If you're seeing this, you've probably already done this step. Congrats!
+First you need to clone this repository and install dependencies:
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+git clone git@github.com:nuclia/ui-starter.git
+cd ui-starter
+npm install
+npm run missdev
 ```
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've cloned the project and installed dependencies, start a development server:
 
 ```bash
 npm run dev

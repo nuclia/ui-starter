@@ -1,0 +1,11 @@
+{
+  "nuclia": {
+    "url": "git@github.com:nuclia/frontend.git",
+    "https": "https://github.com/nuclia/frontend.git",
+    "packages": {
+      "@nuclia/core": "/libs/sdk-core/src",
+      "@nuclia/ui": "/libs/search-widget/src",
+      "@nuclia/prediction": "/libs/prediction/src"
+    }
+  }
+}
