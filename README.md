@@ -22,7 +22,11 @@ We're using `missdev` to load and have access to Nuclia’s frontend dependencie
 - **@nuclia/ui**: Svelte components and web components allowing to use Nuclia’s search capabilities
 - **@nuclia/prediction**: library used by Nuclia’s `SearchBar` widget
 
-The starter includes a simple example of Nuclia’s widgets integration in a SvelteKit application.
+The starter is a [SvelteKit](https://kit.svelte.dev/docs/introduction) application including:
+
+- a page showing a simple example of Nuclia’s widgets integration
+- a page showing an example of Nuclia’s `NucliaSearchResults` widget working with resulting loading from the API without using `NucliaSearchBar` widget
+- a simple layout allowing to navigate between the pages
 
 ## Developing
 
