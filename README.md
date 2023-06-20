@@ -1,4 +1,4 @@
-# UI-starter
+# Nuclia UI starter
 
 Start building your own Svelte application using Nuclia’s search capabilities and UI tools.
 
@@ -13,6 +13,17 @@ npm install
 npm run missdev
 ```
 
+You may have noticed the last step `npm run missdev` which might be unusual to you. [mrs-developer](https://github.com/collective/mrs-developer) is a NodeJS utility providing the command `missdev`
+which makes it easy to work with external source code locally, as it allows to replace any given dependency with a checkout from its Git repository.
+
+We're using `missdev` to load and have access to Nuclia’s frontend dependencies:
+
+- **@nuclia/core**: SDK allowing to integrate Nuclia services in your frontend application
+- **@nuclia/ui**: Svelte components and web components allowing to use Nuclia’s search capabilities
+- **@nuclia/prediction**: library used by Nuclia’s `SearchBar` widget
+
+The starter includes a simple example of Nuclia’s widgets integration in a SvelteKit application.
+
 ## Developing
 
 Once you've cloned the project and installed dependencies, start a development server:
@@ -23,6 +34,8 @@ npm run dev
 # or start the server and open the app in a new browser tab
 npm run dev -- --open
 ```
+
+The app is then available on http://localhost:5173/.
 
 ## Building
 
