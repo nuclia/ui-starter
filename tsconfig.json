@@ -1,25 +1,25 @@
 {
-  "extends": "./.svelte-kit/tsconfig.json",
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      "@nuclia/core": [
-        "src/../libs/nuclia/libs/sdk-core/src"
-      ],
-      "@nuclia/ui": [
-        "src/../libs/nuclia/libs/search-widget/src"
-      ],
-      "@nuclia/prediction": [
-        "src/../libs/nuclia/libs/prediction/src"
-      ]
+    "extends": "./.svelte-kit/tsconfig.json",
+    "compilerOptions": {
+        "allowJs": true,
+        "checkJs": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "strict": true,
+        "baseUrl": ".",
+        "paths": {
+            "@nuclia/core": [
+                "src/../libs/nuclia/libs/sdk-core/src"
+            ],
+            "@nuclia/ui": [
+                "src/../libs/nuclia/libs/search-widget/src"
+            ],
+            "@nuclia/prediction": [
+                "src/../libs/nuclia/libs/prediction/src"
+            ]
+        }
     }
-  }
 }
