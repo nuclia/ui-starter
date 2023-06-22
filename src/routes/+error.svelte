@@ -9,7 +9,7 @@
     <p>This can be caused by outdated Nuclia dependencies.</p>
     <p>To solve the problem, try to run <code>npm run missdev</code> and then reload the page.</p>
   {:else if $page.status === 404}
-    <p>Seems like you’re trying to access a page that doesn’t exists…</p>
+    <p>Seems like you’re trying to access a page that doesn’t exist…</p>
   {/if}
 </main>
 
