@@ -1,0 +1,16 @@
+header {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.main-description {
+  max-width: 944px;
+  margin-bottom: 1rem;
+  text-align: center;
+
+  p {
+    line-height: 1.25rem;
+  }
+}
