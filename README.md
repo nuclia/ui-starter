@@ -26,6 +26,7 @@ The starter is a [SvelteKit](https://kit.svelte.dev/docs/introduction) applicati
 
 - a page showing a simple example of Nuclia’s widgets integration
 - a page showing an example of Nuclia’s `NucliaSearchResults` widget working with resulting loading from the API without using `NucliaSearchBar` widget
+- a page showing how to customize Nuclia‘s widgets
 - a simple layout allowing to navigate between the pages
 
 ## Developing
