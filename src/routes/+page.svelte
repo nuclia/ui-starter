@@ -15,7 +15,7 @@
       knowledgebox={knowledgeBoxId}
       lang="en"
       placeholder="Ask your question here"
-      features="suggestions,permalink,answers,relations" />
+      features="suggestions,permalink,answers,relations,filter" />
 </header>
 
 <NucliaSearchResults />
@@ -23,11 +23,4 @@
 
 <style lang="scss">
   @import "common";
-
-  :global(body.dark) {
-    --custom-text-color: #fff;
-    --custom-hover-background-color: var(--dark-background-lighter);
-    --custom-modal-background-color: var(--dark-background-modal);
-    --custom-container-background-color: var(--dark-background);
-  }
 </style>

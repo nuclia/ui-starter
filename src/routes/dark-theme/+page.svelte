@@ -29,7 +29,7 @@
       knowledgebox={knowledgeBoxId}
       lang="en"
       placeholder="Ask your question here"
-      features="suggestions,permalink,answers" />
+      features="suggestions,permalink,answers,filter" />
 </header>
 
 <NucliaSearchResults />
@@ -37,4 +37,16 @@
 
 <style lang="scss">
   @import "../common";
+
+  :global(body.dark) {
+    --custom-text-color: var(--main-text-color);
+    --custom-border-color: #fff;
+    --custom-selected-text-color: var(--selected-text-color);
+    --custom-selected-background-color: var(--selected-background-color);
+    --custom-hover-background-color: var(--hover-background-color);
+    --custom-modal-background-color: var(--modal-background-color);
+    --custom-container-background-color: var(--main-background-color);
+    --custom-dropdown-background-color: var(--dropdown-background-color);
+    --custom-thumbnail-background-color: var(--hover-background-color);
+  }
 </style>
