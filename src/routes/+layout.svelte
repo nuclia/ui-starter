@@ -2,10 +2,12 @@
   import {page} from '$app/stores';
 </script>
 
-<nav class:dark={$page.url.pathname === '/dark-theme'}>
+<nav class:custom={$page.url.pathname === '/custom-theme'}
+     class:dark={$page.url.pathname === '/dark-mode'}>
   <a href="/" class:active={$page.url.pathname === '/'}>Main widgets</a>
   <a href="/api-results" class:active={$page.url.pathname === '/api-results'}>Search API results</a>
-  <a href="/dark-theme" class:active={$page.url.pathname === '/dark-theme'}>Dark theme</a>
+  <a href="/dark-mode" class:active={$page.url.pathname === '/dark-mode'}>Dark mode</a>
+  <a href="/custom-theme" class:active={$page.url.pathname === '/custom-theme'}>Custom theme</a>
 </nav>
 
 <main>
@@ -39,15 +41,15 @@
     }
 
     &.dark {
-      background: var(--hover-background-color);
+      background: var(--local-dark-hover);
 
       a {
-        background: var(--hover-background-color);
-        color: var(--hover-link-color);
+        background: var(--local-dark-hover);
+        color: var(--local-dark-hover-link);
 
         &.active {
-          background: var(--main-background-color);
-          color: var(--main-text-color);
+          background: var(--local-dark-main-background);
+          color: var(--local-dark-main-text);
         }
       }
     }
@@ -73,24 +75,24 @@
     }
   }
 
+  :global(.custom) {
+    color: var(--local-main-blue);
+  }
+
   :global(.dark) {
-    background: var(--main-background-color);
-    color: var(--main-text-color);
+    background: var(--local-dark-main-background);
+    color: var(--local-dark-main-text);
   }
 
   :global(body) {
     margin: 0;
     transition: color 0.16s ease-in-out, background 0.16s ease-in-out;
 
-    --main-background-color: #1f2023;     // hsl(225,6,13)
-    --hover-background-color: #2b2d30;    // hsl(216,5,18)
-    --modal-background-color: #303136;    // hsl(230,6,20)
-    --dropdown-background-color: #26282B; // hsl(216,6,16)
-    --selected-text-color: #000;
-    --selected-background-color: #fff;
+    --local-main-blue: #1F00CC;
 
-    --main-text-color: #f7f7f8;
-    --main-border-color: var(--color-neutral-light);
-    --hover-link-color: #eeebff;
+    --local-dark-main-text: #f7f7f8;
+    --local-dark-main-background: #1f2023;
+    --local-dark-hover-link: #eeebff;
+    --local-dark-hover: #2b2d30;
   }
 </style>
