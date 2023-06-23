@@ -5,11 +5,10 @@
     initViewer,
     NucliaSearchResults,
     resetNuclia,
+    resetStatesAndEffects,
     searchQuery,
     searchResults,
-    searchState,
     setLang,
-    unsubscribeAllEffects,
   } from '@nuclia/ui';
   import { ResourceProperties, Search } from '@nuclia/core';
   import { onDestroy, onMount } from 'svelte';
@@ -56,8 +55,7 @@
   onDestroy(() => {
     // Reset Nuclia and the state to start from scratch when navigating between pages
     resetNuclia();
-    searchState.reset();
-    unsubscribeAllEffects();
+    resetStatesAndEffects();
   });
 </script>
 
