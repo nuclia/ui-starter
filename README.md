@@ -7,7 +7,14 @@ Start building your own Svelte application using Nuclia’s search capabilities 
 First you need to clone this repository and install dependencies:
 
 ```bash
+# dependant on the method you prefer to do:
 git clone git@github.com:nuclia/ui-starter.git
+# or
+git clone https://github.com/nuclia/ui-starter.git
+# or
+download and uncompress zip directly from the repo
+
+#then do:
 cd ui-starter
 npm install
 npm run missdev
