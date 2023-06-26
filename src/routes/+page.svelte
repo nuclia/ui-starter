@@ -17,7 +17,6 @@
   <NucliaSearchBar
       bind:this={searchBar}
       knowledgebox={knowledgeBoxId}
-      backend="https://stashify.cloud/api"
       lang="en"
       placeholder="Ask your question here"
       features="suggestions,permalink,answers,relations,filter" />
