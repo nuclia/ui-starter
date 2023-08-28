@@ -5,9 +5,11 @@ Start building your own Svelte application using Nuclia’s search capabilities 
 ## Installation
 
 First you need to either download and uncompress the zip file directly from the repository or clone it by doing:
+
 ```bash
 git clone https://github.com/nuclia/ui-starter.git
 ```
+
 Then, install dependencies:
 
 ```bash
@@ -27,11 +29,12 @@ We're using `missdev` to load and have access to Nuclia’s frontend dependencie
 
 The starter is a [SvelteKit](https://kit.svelte.dev/docs/introduction) application including:
 
+- a simple layout allowing to navigate between the pages
 - a page showing a simple example of Nuclia’s widgets integration
-- a page showing an example of Nuclia’s `NucliaSearchResults` widget working with resulting loading from the API without using `NucliaSearchBar` widget
+- a page showing an example of how Nuclia’s `NucliaSearchResults` widget works, loading API results without using the `NucliaSearchBar` widget.
 - a page showing Nuclia‘s widgets dark mode
 - a page showing how to customize Nuclia‘s widgets style
-- a simple layout allowing to navigate between the pages
+- a page showing how to easily add a breadcrumb above result rows
 
 ## Developing
 
