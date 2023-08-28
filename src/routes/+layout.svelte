@@ -8,6 +8,7 @@
   <a href="/api-results" class:active={$page.url.pathname === '/api-results'}>Search API results</a>
   <a href="/dark-mode" class:active={$page.url.pathname === '/dark-mode'}>Dark mode</a>
   <a href="/custom-theme" class:active={$page.url.pathname === '/custom-theme'}>Custom theme</a>
+  <a href="/breadcrumbs" class:active={$page.url.pathname === '/breadcrumbs'}>Breadcrumbs</a>
 </nav>
 
 <main>

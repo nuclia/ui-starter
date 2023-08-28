@@ -68,9 +68,7 @@
       <br>Then we display them in <code>NucliaSearchResults</code> widget.
     </p>
     <p><strong>{query}</strong></p>
-
   </div>
-
 </header>
 
 <NucliaSearchResults/>
