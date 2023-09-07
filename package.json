@@ -1,10 +1,10 @@
 {
-  "name": "ui-starter",
+  "name": "global-search",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "vite build -c=vite-build.config.ts -- search-widget nuclia-global-search-widget",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -15,6 +15,7 @@
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
     "@sveltejs/kit": "^1.5.0",
+    "@sveltejs/vite-plugin-svelte": "^2.4.5",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "eslint": "^8.28.0",
@@ -29,10 +30,12 @@
     "svelte-preprocess": "^5.0.4",
     "tslib": "^2.4.1",
     "typescript": "^5.0.0",
-    "vite": "^4.3.0"
+    "vite": "^4.3.0",
+    "vite-tsconfig-paths": "^4.0.2"
   },
   "type": "module",
   "dependencies": {
+    "@types/node": "^20.5.9",
     "date-fns": "^2.30.0",
     "posthog-js": "^1.68.4",
     "rxjs": "^7.8.1",

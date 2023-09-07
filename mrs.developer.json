@@ -6,6 +6,7 @@
       "@nuclia/core": "/libs/sdk-core/src",
       "@nuclia/ui": "/libs/search-widget/src",
       "@nuclia/prediction": "/libs/prediction/src"
-    }
+    },
+    "branch": "sc-7043/global-site-search-widget"
   }
 }

@@ -1,28 +1,23 @@
 <script lang="ts">
-  import { NucliaSearchBar, NucliaSearchResults } from '@nuclia/ui';
+  import { NucliaGlobalSearch } from '@nuclia/ui';
 
-  let searchBar: NucliaSearchBar;
-  let knowledgeBoxId = '16375869-1037-460d-8648-b3ee9c9206c0';
+  let searchBar: NucliaGlobalSearch;
+  let knowledgeBoxId = '0e8d7a91-4fb1-4fec-b7a9-e6cfed451aa1';
 </script>
 
 <header>
   <div class="main-description">
-    <h2>Main widgets</h2>
-    <p>We have indexed the market outlook reports from the biggest financial institutions world-wide.
-      <br>You can ask questions like
-      "<strong class="example-query" on:click={() => searchBar.search('Will France be in recession in 2023?')}>Will France be in recession in 2023?</strong>"
-      or "<strong class="example-query" on:click={() => searchBar.search('Gold price evolution in 2023')}>Gold price evolution in 2023</strong>"</p>
-    <p>Below are the default Nuclia <code>SearchBar</code> and <code>SearchResults</code> widgets</p>
+    <h2>Global search widget</h2>
+    <p>Click on search button to start searching</p>
+    <button data-nuclia="global-search-button">Open search</button>
   </div>
-  <NucliaSearchBar
+  <NucliaGlobalSearch
       bind:this={searchBar}
       knowledgebox={knowledgeBoxId}
       lang="en"
       placeholder="Ask your question here"
-      features="suggestions,permalink,answers,relations,filter" />
+      features="suggestions,answers,hideSources,hideThumbnails" />
 </header>
-
-<NucliaSearchResults />
 
 
 <style lang="scss">
