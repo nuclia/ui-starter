@@ -14,13 +14,13 @@ function wi(t) {
 function Vi() {
   return /* @__PURE__ */ Object.create(null);
 }
-function Oe(t) {
+function Pe(t) {
   t.forEach(wi);
 }
 function nn(t) {
   return typeof t == "function";
 }
-function Fe(t, e) {
+function Oe(t, e) {
   return t != t ? e == e : t !== e || t && typeof t == "object" || typeof t == "function";
 }
 let Rn;
@@ -140,13 +140,13 @@ function b(t, e, n) {
 function zl(t) {
   return Array.from(t.childNodes);
 }
-function Te(t, e) {
+function xe(t, e) {
   e = "" + e, t.data !== e && (t.data = e);
 }
 function Ji(t, e) {
   t.value = e ?? "";
 }
-function Ie(t, e, n, r) {
+function Ce(t, e, n, r) {
   n == null ? t.style.removeProperty(e) : t.style.setProperty(e, n, r ? "important" : "");
 }
 let Pn;
@@ -262,7 +262,7 @@ function ke() {
 }
 function Vl(t) {
   if (t.fragment !== null) {
-    t.update(), Oe(t.before_update);
+    t.update(), Pe(t.before_update);
     const e = t.dirty;
     t.dirty = [-1], t.fragment && t.fragment.p(t.ctx, e), t.after_update.forEach(rn);
   }
@@ -282,7 +282,7 @@ function ge() {
   };
 }
 function ve() {
-  zt.r || Oe(zt.c), zt = zt.p;
+  zt.r || Pe(zt.c), zt = zt.p;
 }
 function w(t, e) {
   t && t.i && (Ln.delete(t), t.i(e));
@@ -327,7 +327,7 @@ function Kl(t, e, n, r, i, s, o, a, l, c, u, d) {
   }
   for (; h; )
     I(_[h - 1]);
-  return Oe(F), _;
+  return Pe(F), _;
 }
 function le(t) {
   t && t.c();
@@ -336,17 +336,17 @@ function oe(t, e, n, r) {
   const { fragment: i, after_update: s } = t.$$;
   i && i.m(e, n), r || rn(() => {
     const o = t.$$.on_mount.map(wi).filter(nn);
-    t.$$.on_destroy ? t.$$.on_destroy.push(...o) : Oe(o), t.$$.on_mount = [];
+    t.$$.on_destroy ? t.$$.on_destroy.push(...o) : Pe(o), t.$$.on_mount = [];
   }), s.forEach(rn);
 }
 function re(t, e) {
   const n = t.$$;
-  n.fragment !== null && (Gl(n.after_update), Oe(n.on_destroy), n.fragment && n.fragment.d(e), n.on_destroy = n.fragment = null, n.ctx = []);
+  n.fragment !== null && (Gl(n.after_update), Pe(n.on_destroy), n.fragment && n.fragment.d(e), n.on_destroy = n.fragment = null, n.ctx = []);
 }
 function Ql(t, e) {
   t.$$.dirty[0] === -1 && (Kt.push(t), Ro(), t.$$.dirty.fill(0)), t.$$.dirty[e / 31 | 0] |= 1 << e % 31;
 }
-function Ce(t, e, n, r, i, s, o, a = [-1]) {
+function Fe(t, e, n, r, i, s, o, a = [-1]) {
   const l = yn;
   pn(t);
   const c = t.$$ = {
@@ -375,7 +375,7 @@ function Ce(t, e, n, r, i, s, o, a = [-1]) {
   if (c.ctx = n ? n(t, e.props || {}, (d, f, ...h) => {
     const g = h.length ? h[0] : f;
     return c.ctx && i(c.ctx[d], c.ctx[d] = g) && (!c.skip_bound && c.bound[d] && c.bound[d](g), u && Ql(t, d)), f;
-  }) : [], c.update(), u = !0, Oe(c.before_update), c.fragment = r ? r(c.ctx) : !1, e.target) {
+  }) : [], c.update(), u = !0, Pe(c.before_update), c.fragment = r ? r(c.ctx) : !1, e.target) {
     if (e.hydrate) {
       const d = zl(e.target);
       c.fragment && c.fragment.l(d), d.forEach(T);
@@ -400,7 +400,7 @@ typeof HTMLElement == "function" && (Po = class extends HTMLElement {
     this[t] = n;
   }
   disconnectedCallback() {
-    Oe(this.$$.on_disconnect);
+    Pe(this.$$.on_disconnect);
   }
   $destroy() {
     re(this, 1), this.$destroy = z;
@@ -1008,7 +1008,7 @@ function Ge(t) {
     throw new TypeError("Unable to lift unknown Observable type");
   };
 }
-function Re(t, e, n, r, i) {
+function Te(t, e, n, r, i) {
   return new cc(t, e, n, r, i);
 }
 var cc = function(t) {
@@ -1493,7 +1493,7 @@ function _t(t, e, n, r, i) {
 }
 function Ko(t, e) {
   return e === void 0 && (e = 0), Ge(function(n, r) {
-    n.subscribe(Re(r, function(i) {
+    n.subscribe(Te(r, function(i) {
       return _t(r, t, function() {
         return r.next(i);
       }, e);
@@ -1627,7 +1627,7 @@ function Fc(t) {
 function A(t, e) {
   return Ge(function(n, r) {
     var i = 0;
-    n.subscribe(Re(r, function(s) {
+    n.subscribe(Te(r, function(s) {
       r.next(t.call(e, s, i++));
     }));
   });
@@ -1684,7 +1684,7 @@ function Dc(t, e, n) {
       for (var i = t.length, s = new Array(i), o = i, a = i, l = function(u) {
         ts(e, function() {
           var d = fe(t[u], e), f = !1;
-          d.subscribe(Re(r, function(h) {
+          d.subscribe(Te(r, function(h) {
             s[u] = h, f || (f = !0, a--), a || r.next(n(s.slice()));
           }, function() {
             --o || r.complete();
@@ -1706,7 +1706,7 @@ function Uc(t, e, n, r, i, s, o, a) {
   }, g = function(p) {
     s && e.next(p), c++;
     var _ = !1;
-    Ye(n(p, u++)).subscribe(Re(e, function(v) {
+    Ye(n(p, u++)).subscribe(Te(e, function(v) {
       i == null || i(v), s ? h(v) : e.next(v);
     }, function() {
       _ = !0;
@@ -1727,7 +1727,7 @@ function Uc(t, e, n, r, i, s, o, a) {
         }
     }));
   };
-  return t.subscribe(Re(e, h, function() {
+  return t.subscribe(Te(e, h, function() {
     d = !0, f();
   })), function() {
     a == null || a();
@@ -1764,7 +1764,7 @@ function gr() {
     }
     for (var c = new Array(l), u = l, d = l, f = function(g) {
       var p = !1;
-      Ye(i[g]).subscribe(Re(a, function(_) {
+      Ye(i[g]).subscribe(Te(a, function(_) {
         p || (p = !0, d--), c[g] = _;
       }, function() {
         return u--;
@@ -1797,7 +1797,7 @@ function ra() {
 function ae(t, e) {
   return Ge(function(n, r) {
     var i = 0;
-    n.subscribe(Re(r, function(s) {
+    n.subscribe(Te(r, function(s) {
       return t.call(e, s, i++) && r.next(s);
     }));
   });
@@ -1820,7 +1820,7 @@ function qc(t, e, n) {
 function We(t) {
   return Ge(function(e, n) {
     var r = null, i = !1, s;
-    r = e.subscribe(Re(n, void 0, void 0, function(o) {
+    r = e.subscribe(Te(n, void 0, void 0, function(o) {
       s = Ye(t(o, We(t)(e))), r ? (r.unsubscribe(), r = null, s.subscribe(n)) : i = !0;
     })), i && (r.unsubscribe(), r = null, s.subscribe(n));
   });
@@ -1845,7 +1845,7 @@ function ia(t, e) {
       }
       a();
     }
-    n.subscribe(Re(r, function(c) {
+    n.subscribe(Te(r, function(c) {
       s = c, o = e.now(), i || (i = e.schedule(l, t), r.add(i));
     }, function() {
       a(), r.complete();
@@ -1859,7 +1859,7 @@ function se(t) {
     return pr;
   } : Ge(function(e, n) {
     var r = 0;
-    e.subscribe(Re(n, function(i) {
+    e.subscribe(Te(n, function(i) {
       ++r <= t && (n.next(i), t <= r && n.complete());
     }));
   });
@@ -1867,7 +1867,7 @@ function se(t) {
 function It(t, e) {
   return e === void 0 && (e = an), t = t ?? Hc, Ge(function(n, r) {
     var i, s = !0;
-    n.subscribe(Re(r, function(o) {
+    n.subscribe(Te(r, function(o) {
       var a = e(o);
       (s || !t(i, a)) && (s = !1, i = a, r.next(o));
     }));
@@ -1883,7 +1883,7 @@ function sa(t) {
   } : Ge(function(i, s) {
     var o = 0, a, l = function() {
       if (a == null || a.unsubscribe(), a = null, r != null) {
-        var u = typeof r == "number" ? na(r) : Ye(r(o)), d = Re(s, function() {
+        var u = typeof r == "number" ? na(r) : Ye(r(o)), d = Te(s, function() {
           d.unsubscribe(), c();
         });
         u.subscribe(d);
@@ -1891,7 +1891,7 @@ function sa(t) {
         c();
     }, c = function() {
       var u = !1;
-      a = i.subscribe(Re(s, void 0, function() {
+      a = i.subscribe(Te(s, void 0, function() {
         ++o < n ? a ? l() : u = !0 : s.complete();
       })), u && l();
     };
@@ -1916,10 +1916,10 @@ function L(t, e) {
     var i = null, s = 0, o = !1, a = function() {
       return o && !i && r.complete();
     };
-    n.subscribe(Re(r, function(l) {
+    n.subscribe(Te(r, function(l) {
       i == null || i.unsubscribe();
       var c = 0, u = s++;
-      Ye(t(l, u)).subscribe(i = Re(r, function(d) {
+      Ye(t(l, u)).subscribe(i = Te(r, function(d) {
         return r.next(e ? e(l, d, u, c++) : d);
       }, function() {
         i = null, a();
@@ -1935,7 +1935,7 @@ function qe(t, e, n) {
     var o;
     (o = r.subscribe) === null || o === void 0 || o.call(r);
     var a = !0;
-    i.subscribe(Re(s, function(l) {
+    i.subscribe(Te(s, function(l) {
       var c;
       (c = r.next) === null || c === void 0 || c.call(r, l), s.next(l);
     }, function() {
@@ -1970,7 +1970,7 @@ function aa(t, e) {
       a = !1, i.error(f);
     };
     return fetch(t, u).then(function(f) {
-      n ? Ye(n(f)).subscribe(Re(i, void 0, function() {
+      n ? Ye(n(f)).subscribe(Te(i, void 0, function() {
         a = !1, i.complete();
       }, d)) : (a = !1, i.next(f), i.complete());
     }).catch(d), function() {
@@ -7470,13 +7470,13 @@ var Ed = function() {
   $n[t] = e;
 }, remove: function(t) {
   delete $n[t];
-} }, jt = null, xe = { is_supported: function() {
+} }, jt = null, Ie = { is_supported: function() {
   if (jt !== null)
     return jt;
   if (jt = !0, typeof window < "u")
     try {
       var t = "__support__";
-      xe.set(t, "xyz"), xe.get(t) !== '"xyz"' && (jt = !1), xe.remove(t);
+      Ie.set(t, "xyz"), Ie.get(t) !== '"xyz"' && (jt = !1), Ie.remove(t);
     } catch {
       jt = !1;
     }
@@ -7489,12 +7489,12 @@ var Ed = function() {
   try {
     return window.sessionStorage.getItem(t);
   } catch (e) {
-    xe.error(e);
+    Ie.error(e);
   }
   return null;
 }, parse: function(t) {
   try {
-    return JSON.parse(xe.get(t)) || null;
+    return JSON.parse(Ie.get(t)) || null;
   } catch {
   }
   return null;
@@ -7502,13 +7502,13 @@ var Ed = function() {
   try {
     window.sessionStorage.setItem(t, JSON.stringify(e));
   } catch (n) {
-    xe.error(n);
+    Ie.error(n);
   }
 }, remove: function(t) {
   try {
     window.sessionStorage.removeItem(t);
   } catch (e) {
-    xe.error(e);
+    Ie.error(e);
   }
 } }, Za = "$people_distinct_id", Bn = "__alias", hn = "__timers", ks = "$autocapture_disabled_server_side", ci = "$session_recording_enabled_server_side", Ss = "$console_log_recording_enabled_server_side", Es = "$session_recording_recorder_version_server_side", ui = "$sesid", Xt = "$enabled_feature_flags", di = "$early_access_features", Yt = "$stored_person_properties", Et = "$stored_group_properties", fi = "$surveys", or = "$flag_call_reported", hi = "$user_state", xd = [Za, Bn, "__cmpns", hn, ci, ui, Xt, hi, di, Et, Yt, fi, or], Td = ["cookie", "localstorage", "localstorage+cookie", "sessionstorage", "memory"], As = function() {
   function t(e) {
@@ -7516,7 +7516,7 @@ var Ed = function() {
     var n = "";
     e.token && (n = e.token.replace(/\+/g, "PL").replace(/\//g, "SL").replace(/=/g, "EQ")), this.props = {}, this.campaign_params_saved = !1, this.custom_campaign_params = e.custom_campaign_params || [], e.persistence_name ? this.name = "ph_" + e.persistence_name : this.name = "ph_" + n + "_posthog", Td.indexOf(e.persistence.toLowerCase()) === -1 && (te.critical("Unknown persistence type " + e.persistence + "; falling back to cookie"), e.persistence = "cookie");
     var r = e.persistence.toLowerCase();
-    r === "localstorage" && de.is_supported() ? this.storage = de : r === "localstorage+cookie" && li.is_supported() ? this.storage = li : r === "sessionstorage" && xe.is_supported() ? this.storage = xe : this.storage = r === "memory" ? Id : st, this.user_state = "anonymous", this.load(), this.update_config(e), this.save();
+    r === "localstorage" && de.is_supported() ? this.storage = de : r === "localstorage+cookie" && li.is_supported() ? this.storage = li : r === "sessionstorage" && Ie.is_supported() ? this.storage = Ie : this.storage = r === "memory" ? Id : st, this.user_state = "anonymous", this.load(), this.update_config(e), this.save();
   }
   return ue(t, [{ key: "properties", value: function() {
     var e = {};
@@ -8521,10 +8521,10 @@ var Lt, Fs, Cs, tf = vn(Wt, 9, 0), nf = vn(ar, 5, 0), al = function(t) {
       ft(e, u + 3 * O, ie[Ps[O]]);
     u += 3 * Y;
     for (var dt = [m, k], ye = 0; ye < 2; ++ye) {
-      var Pe = dt[ye];
-      for (O = 0; O < Pe.length; ++O) {
-        var we = 31 & Pe[O];
-        ft(e, u, Qe[we]), u += ie[we], we > 15 && (ft(e, u, Pe[O] >>> 5 & 127), u += Pe[O] >>> 12);
+      var Re = dt[ye];
+      for (O = 0; O < Re.length; ++O) {
+        var we = 31 & Re[O];
+        ft(e, u, Qe[we]), u += ie[we], we > 15 && (ft(e, u, Re[O] >>> 5 & 127), u += Re[O] >>> 12);
       }
     }
   } else
@@ -8575,14 +8575,14 @@ var Lt, Fs, Cs, tf = vn(Wt, 9, 0), nf = vn(ar, 5, 0), al = function(t) {
             for (ye = 0; ye < 30; ++ye)
               Y[ye] = 0;
           }
-          var Pe = 2, we = 0, kt = F, Ue = Je - Qe & 32767;
+          var Re = 2, we = 0, kt = F, Ue = Je - Qe & 32767;
           if (dt > 2 && et == j(p - Ue))
             for (var kr = Math.min(m, dt) - 1, Sr = Math.min(32767, p), Er = Math.min(258, dt); Ue <= Sr && --kt && Je != Qe; ) {
-              if (s[p + Pe] == s[p + Pe - Ue]) {
+              if (s[p + Re] == s[p + Re - Ue]) {
                 for (var tt = 0; tt < Er && s[p + tt] == s[p + tt - Ue]; ++tt)
                   ;
-                if (tt > Pe) {
-                  if (Pe = tt, we = Ue, tt > kr)
+                if (tt > Re) {
+                  if (Re = tt, we = Ue, tt > kr)
                     break;
                   var E = Math.min(Ue, tt - 2), Be = 0;
                   for (ye = 0; ye < E; ++ye) {
@@ -8594,9 +8594,9 @@ var Lt, Fs, Cs, tf = vn(Wt, 9, 0), nf = vn(ar, 5, 0), al = function(t) {
               Ue += (Je = Qe) - (Qe = k[Je]) + 32768 & 32767;
             }
           if (we) {
-            ie[me++] = 268435456 | pi[Pe] << 18 | Os[we];
-            var Hi = 31 & pi[Pe], Wi = 31 & Os[we];
-            Ne += ji[Hi] + Mi[Wi], ++Me[257 + Hi], ++Y[Wi], wt = p + Pe, ++De;
+            ie[me++] = 268435456 | pi[Re] << 18 | Os[we];
+            var Hi = 31 & pi[Re], Wi = 31 & Os[we];
+            Ne += ji[Hi] + Mi[Wi], ++Me[257 + Hi], ++Y[Wi], wt = p + Re, ++De;
           } else
             ie[me++] = s[p], ++Me[s[p]];
         }
@@ -8778,17 +8778,17 @@ var pf = function(t, e, n) {
     ce(this, t), this.config = e, this.persistence = n, this._windowId = void 0, this._sessionId = void 0, this._sessionStartTimestamp = null, this._sessionActivityTimestamp = null;
     var r = e.persistence_name || e.token, i = e.session_idle_timeout_seconds || Mn;
     if (typeof i != "number" ? (console.warn("[PostHog] session_idle_timeout_seconds must be a number. Defaulting to 30 minutes."), i = Mn) : i > Mn ? console.warn("[PostHog] session_idle_timeout_seconds cannot be  greater than 30 minutes. Using 30 minutes instead.") : i < Ms && console.warn("[PostHog] session_idle_timeout_seconds cannot be less than 60 seconds. Using 60 seconds instead."), this._sessionTimeoutMs = 1e3 * Math.min(Math.max(i, Ms), Mn), this._window_id_storage_key = "ph_" + r + "_window_id", this._primary_window_exists_storage_key = "ph_" + r + "_primary_window_exists", this._canUseSessionStorage()) {
-      var s = xe.parse(this._window_id_storage_key), o = xe.parse(this._primary_window_exists_storage_key);
-      s && !o ? this._windowId = s : xe.remove(this._window_id_storage_key), xe.set(this._primary_window_exists_storage_key, !0);
+      var s = Ie.parse(this._window_id_storage_key), o = Ie.parse(this._primary_window_exists_storage_key);
+      s && !o ? this._windowId = s : Ie.remove(this._window_id_storage_key), Ie.set(this._primary_window_exists_storage_key, !0);
     }
     this._listenToReloadWindow();
   }
   return ue(t, [{ key: "_canUseSessionStorage", value: function() {
-    return this.config.persistence !== "memory" && !this.persistence.disabled && xe.is_supported();
+    return this.config.persistence !== "memory" && !this.persistence.disabled && Ie.is_supported();
   } }, { key: "_setWindowId", value: function(e) {
-    e !== this._windowId && (this._windowId = e, this._canUseSessionStorage() && xe.set(this._window_id_storage_key, e));
+    e !== this._windowId && (this._windowId = e, this._canUseSessionStorage() && Ie.set(this._window_id_storage_key, e));
   } }, { key: "_getWindowId", value: function() {
-    return this._windowId ? this._windowId : this._canUseSessionStorage() ? xe.parse(this._window_id_storage_key) : null;
+    return this._windowId ? this._windowId : this._canUseSessionStorage() ? Ie.parse(this._window_id_storage_key) : null;
   } }, { key: "_setSessionId", value: function(e, n, r) {
     e === this._sessionId && n === this._sessionActivityTimestamp && r === this._sessionStartTimestamp || (this._sessionStartTimestamp = r, this._sessionActivityTimestamp = n, this._sessionId = e, this.persistence.register(N({}, ui, [n, e, r])));
   } }, { key: "_getSessionId", value: function() {
@@ -8801,7 +8801,7 @@ var pf = function(t, e, n) {
   } }, { key: "_listenToReloadWindow", value: function() {
     var e = this;
     window.addEventListener("beforeunload", function() {
-      e._canUseSessionStorage() && xe.remove(e._primary_window_exists_storage_key);
+      e._canUseSessionStorage() && Ie.remove(e._primary_window_exists_storage_key);
     });
   } }, { key: "checkAndGetSessionAndWindowId", value: function() {
     var e = arguments.length > 0 && arguments[0] !== void 0 && arguments[0], n = (arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null) || (/* @__PURE__ */ new Date()).getTime(), r = Pt(this._getSessionId(), 3), i = r[0], s = r[1], o = r[2], a = this._getWindowId(), l = o && o > 0 && Math.abs(n - o) > _f;
@@ -9856,7 +9856,7 @@ function Yf(t, e, n) {
 }
 class wl extends je {
   constructor(e) {
-    super(), Ce(this, e, Yf, Xf, Fe, { name: 0, size: 1 }, Qf);
+    super(), Fe(this, e, Yf, Xf, Oe, { name: 0, size: 1 }, Qf);
   }
 }
 function Zf(t) {
@@ -9882,7 +9882,7 @@ function Vs(t) {
     p(o, a) {
       a & /*$_*/
       4 && n !== (n = /*$_*/
-      o[2]("modal.back") + "") && Te(r, n);
+      o[2]("modal.back") + "") && xe(r, n);
     },
     d(o) {
       o && T(e), i = !1, s();
@@ -9951,7 +9951,7 @@ function th(t, e, n) {
 }
 class nh extends je {
   constructor(e) {
-    super(), Ce(this, e, th, eh, Fe, { closeButton: 0, backButton: 1 }, Zf);
+    super(), Fe(this, e, th, eh, Oe, { closeButton: 0, backButton: 1 }, Zf);
   }
 }
 function rh(t = !1) {
@@ -10001,12 +10001,12 @@ function Ks(t) {
   );
   return {
     c() {
-      e = S("div"), n = S("dialog"), u && u.c(), r = Q(), i = S("div"), f && f.c(), b(i, "class", "modal-content svelte-8jv0hp"), Ie(
+      e = S("div"), n = S("dialog"), u && u.c(), r = Q(), i = S("div"), f && f.c(), b(i, "class", "modal-content svelte-8jv0hp"), Ce(
         i,
         "--modal-content-height",
         /*modalContentHeight*/
         t[7]
-      ), b(n, "class", "modal svelte-8jv0hp"), Ie(n, "--popup-top", s), Ie(n, "--popup-left", o), Ie(
+      ), b(n, "class", "modal svelte-8jv0hp"), Ce(n, "--popup-top", s), Ce(n, "--popup-left", o), Ce(
         n,
         "--modal-width",
         /*modalWidth*/
@@ -10069,14 +10069,14 @@ function Ks(t) {
         ),
         null
       ), v & /*modalContentHeight*/
-      128 && Ie(
+      128 && Ce(
         i,
         "--modal-content-height",
         /*modalContentHeight*/
         _[7]
       ), v & /*parentPosition*/
       16 && s !== (s = `${/*parentPosition*/
-      ((m = _[4]) == null ? void 0 : m.bottom) || 0}px`) && Ie(n, "--popup-top", s), v & /*alignTo, parentPosition*/
+      ((m = _[4]) == null ? void 0 : m.bottom) || 0}px`) && Ce(n, "--popup-top", s), v & /*alignTo, parentPosition*/
       48 && o !== (o = `${/*alignTo*/
       (_[5] === "right" ? (
         /*parentPosition*/
@@ -10084,8 +10084,8 @@ function Ks(t) {
       ) : (
         /*parentPosition*/
         (y = _[4]) == null ? void 0 : y.left
-      )) || 0}px`) && Ie(n, "--popup-left", o), v & /*modalWidth*/
-      64 && Ie(
+      )) || 0}px`) && Ce(n, "--popup-left", o), v & /*modalWidth*/
+      64 && Ce(
         n,
         "--modal-width",
         /*modalWidth*/
@@ -10116,7 +10116,7 @@ function Ks(t) {
       P(u), P(f, _), a = !1;
     },
     d(_) {
-      _ && T(e), u && u.d(), f && f.d(_), t[17](null), l = !1, Oe(c);
+      _ && T(e), u && u.d(), f && f.d(_), t[17](null), l = !1, Pe(c);
     }
   };
 }
@@ -10206,7 +10206,7 @@ function oh(t) {
       P(s), n = !1;
     },
     d(o) {
-      s && s.d(o), o && T(e), r = !1, Oe(i);
+      s && s.d(o), o && T(e), r = !1, Pe(i);
     }
   };
 }
@@ -10265,12 +10265,12 @@ function ah(t, e, n) {
 }
 class lh extends je {
   constructor(e) {
-    super(), Ce(
+    super(), Fe(
       this,
       e,
       ah,
       oh,
-      Fe,
+      Oe,
       {
         show: 0,
         popup: 1,
@@ -10801,10 +10801,10 @@ function Ys(t) {
     p(c, u) {
       t = c, u & /*paragraphs*/
       1 && n !== (n = /*paragraph*/
-      t[7].text + "") && Te(r, n);
+      t[7].text + "") && xe(r, n);
     },
     d(c) {
-      c && T(e), s = !1, Oe(o);
+      c && T(e), s = !1, Pe(o);
     }
   };
 }
@@ -10823,7 +10823,7 @@ function xh(t) {
     p(i, s) {
       s & /*$_*/
       8 && n !== (n = /*$_*/
-      i[3]("error.search") + "") && Te(r, n);
+      i[3]("error.search") + "") && xe(r, n);
     },
     d(i) {
       i && T(e);
@@ -10845,7 +10845,7 @@ function Th(t) {
     p(i, s) {
       s & /*$_*/
       8 && n !== (n = /*$_*/
-      i[3]("error.feature-blocked") + "") && Te(r, n);
+      i[3]("error.feature-blocked") + "") && xe(r, n);
     },
     d(i) {
       i && T(e);
@@ -10914,7 +10914,7 @@ function Ph(t, e, n) {
 }
 class Oh extends je {
   constructor(e) {
-    super(), Ce(this, e, Ph, Rh, Fe, { paragraphs: 0 }, Eh);
+    super(), Fe(this, e, Ph, Rh, Oe, { paragraphs: 0 }, Eh);
   }
 }
 function Fh(t) {
@@ -11000,7 +11000,7 @@ function Ch(t) {
       P(n.$$.fragment, a), i = !1;
     },
     d(a) {
-      a && T(e), re(n), s = !1, Oe(o);
+      a && T(e), re(n), s = !1, Pe(o);
     }
   };
 }
@@ -11033,12 +11033,12 @@ function $h(t, e, n) {
 }
 class dr extends je {
   constructor(e) {
-    super(), Ce(
+    super(), Fe(
       this,
       e,
       $h,
       Ch,
-      Fe,
+      Oe,
       {
         icon: 0,
         ariaLabel: 1,
@@ -11265,7 +11265,7 @@ function zh(t) {
       P(s), P(u.$$.fragment, v), d = !1;
     },
     d(v) {
-      v && T(e), p[i].d(), t[16](null), t[19](null), v && T(c), re(u, v), f = !1, Oe(h);
+      v && T(e), p[i].d(), t[16](null), t[19](null), v && T(c), re(u, v), f = !1, Pe(h);
     }
   };
 }
@@ -11334,7 +11334,7 @@ function Dh(t, e, n) {
 }
 class Uh extends je {
   constructor(e) {
-    super(), Ce(this, e, Dh, zh, Fe, {}, jh);
+    super(), Fe(this, e, Dh, zh, Oe, {}, jh);
   }
 }
 const Bh = `a{color:var(--link-color)}mark{background-color:inherit;color:inherit;font-weight:var(--font-weight-medium)}mark[family]{background-color:var(--color-neutral-lighter);cursor:pointer;font-weight:var(--font-weight-body);padding:0 var(--rhythm-0_5)}mark.ner[family]{cursor:auto;padding:0;background-color:transparent}.ellipsis{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.highlight{background-color:var(--selected-background-color);color:var(--selected-text-color);border-radius:0}.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}[tabindex="-1"]:focus{outline:0!important}:focus:not(:focus-visible){outline:none}.sw-dropdown ul{list-style:none;margin:0;max-height:var(--rhythm-32);overflow-x:hidden;overflow-y:auto;padding-left:0}ul.sw-dropdown-options li{cursor:pointer;line-height:var(--rhythm-5);padding:0 var(--rhythm-2)}ul.sw-dropdown-options li:hover{background-color:var(--hover-background-color)}ul.sw-dropdown-options li.selected{background-color:var(--selected-background-color);color:var(--selected-text-color)}.sw-dropdown-options .filter-option{align-items:center;display:flex;flex-direction:row;gap:var(--rhythm-1);justify-content:space-between}.sw-dropdown-options .filter-option .filter-title{flex:1 1 0}.sw-dropdown-options .filter-option .filter-color{flex:0 0 auto;height:var(--rhythm-1);width:var(--rhythm-1)}.sw-text-rendering{background:var(--container-background-color);margin:0 auto;max-width:800px;padding:var(--rhythm-1) var(--rhythm-2)}.sw-text-rendering p{padding:var(--rhythm-1) var(--rhythm-2)}.external-html-content p{margin-top:0}.external-html-content p:last-child{margin-bottom:0}.external-html-content h1,.external-html-content h2,.external-html-content h3,.external-html-content h4,.external-html-content h5,.external-html-content h6{line-height:100%}.external-html-content h1:first-child,.external-html-content h2:first-child,.external-html-content h3:first-child,.external-html-content h4:first-child,.external-html-content h5:first-child,.external-html-content h6:first-child{margin-top:0}.sw-paragraphs-container{display:flex;flex-direction:column;gap:var(--paragraph-gap);list-style:none;margin:0;padding:0}.title-m{font-size:var(--font-size-title-m);font-weight:var(--font-weight-title-m);line-height:var(--line-height-title-m)}.title-xs{font-size:var(--font-size-medium);font-weight:var(--font-weight-semi-bold);line-height:var(--line-height-title-xs)}.title-xxs{font-size:var(--font-size-small);font-weight:var(--font-weight-semi-bold);line-height:var(--line-height-title-xxs)}.title-s{font-size:var(--font-size-medium);font-weight:var(--font-weight-semi-bold);line-height:var(--line-height-title-s)}.body-m{font-size:var(--font-size-medium);font-weight:var(--font-weight-body);line-height:var(--line-height-body)}.body-s{font-size:var(--font-size-small);font-weight:var(--font-weight-body);line-height:var(--line-height-body)}.body-xs{font-size:var(--font-size-xsmall);font-weight:var(--font-weight-body);line-height:var(--line-height-body-xs)}pre>code{white-space:pre-wrap}
@@ -11382,7 +11382,7 @@ function Wh(t, e, n) {
 }
 class Vh extends je {
   constructor(e) {
-    super(), Ce(this, e, Wh, Hh, Fe, { small: 0 }, qh);
+    super(), Fe(this, e, Wh, Hh, Oe, { small: 0 }, qh);
   }
 }
 function Gh(t) {
@@ -11425,12 +11425,12 @@ function Kh(t) {
         "expanded",
         /*expanded*/
         t[0]
-      ), b(a, "class", "expander-content svelte-p0cmbw"), Ie(a, "height", c), Ie(
+      ), b(a, "class", "expander-content svelte-p0cmbw"), Ce(a, "height", c), Ce(
         a,
         "display",
         /*showContent*/
         t[3] ? "block" : "none"
-      ), Ie(a, "transition", `height ${/*duration*/
+      ), Ce(a, "transition", `height ${/*duration*/
       t[1]}ms`), b(e, "class", "sw-expander svelte-p0cmbw");
     },
     m(v, m) {
@@ -11494,14 +11494,14 @@ function Kh(t) {
         null
       ), m & /*contentHeight*/
       16 && c !== (c = `${/*contentHeight*/
-      v[4]}px`) && Ie(a, "height", c), m & /*showContent*/
-      8 && Ie(
+      v[4]}px`) && Ce(a, "height", c), m & /*showContent*/
+      8 && Ce(
         a,
         "display",
         /*showContent*/
         v[3] ? "block" : "none"
       ), m & /*duration*/
-      2 && Ie(a, "transition", `height ${/*duration*/
+      2 && Ce(a, "transition", `height ${/*duration*/
       v[1]}ms`);
     },
     i(v) {
@@ -11511,7 +11511,7 @@ function Kh(t) {
       P(i.$$.fragment, v), P(g, v), P(_, v), u = !1;
     },
     d(v) {
-      v && T(e), re(i), g && g.d(v), _ && _.d(v), t[9](null), d = !1, Oe(f);
+      v && T(e), re(i), g && g.d(v), _ && _.d(v), t[9](null), d = !1, Pe(f);
     }
   };
 }
@@ -11564,7 +11564,7 @@ function Qh(t, e, n) {
 }
 class Xh extends je {
   constructor(e) {
-    super(), Ce(this, e, Qh, Kh, Fe, { expanded: 0, duration: 1 }, Gh);
+    super(), Fe(this, e, Qh, Kh, Oe, { expanded: 0, duration: 1 }, Gh);
   }
 }
 function eo(t) {
@@ -11691,7 +11691,7 @@ function Zh(t, e, n) {
 }
 class Il extends je {
   constructor(e) {
-    super(), Ce(this, e, Zh, Yh, Fe, { rank: 0 });
+    super(), Fe(this, e, Zh, Yh, Oe, { rank: 0 });
   }
 }
 function ep(t) {
@@ -11701,7 +11701,7 @@ function tp(t) {
   let e;
   return {
     c() {
-      e = S("div"), Ie(e, "width", "0px");
+      e = S("div"), Ce(e, "width", "0px");
     },
     m(n, r) {
       R(n, e, r), t[2](e);
@@ -11741,7 +11741,7 @@ function np(t, e, n) {
 }
 class rp extends je {
   constructor(e) {
-    super(), Ce(this, e, np, tp, Fe, { hasMore: 1 });
+    super(), Fe(this, e, np, tp, Oe, { hasMore: 1 });
   }
 }
 function ip(t) {
@@ -11854,7 +11854,7 @@ function sp(t) {
     i: z,
     o: z,
     d(a) {
-      a && T(e), t[10](null), s = !1, Oe(o);
+      a && T(e), t[10](null), s = !1, Pe(o);
     }
   };
 }
@@ -11898,12 +11898,12 @@ function op(t, e, n) {
 }
 class ap extends je {
   constructor(e) {
-    super(), Ce(
+    super(), Fe(
       this,
       e,
       op,
       sp,
-      Fe,
+      Oe,
       {
         paragraph: 0,
         resultType: 9,
@@ -11981,7 +11981,7 @@ function no(t) {
     p(s, o) {
       o & /*result*/
       1 && n !== (n = /*result*/
-      s[0].origin.url + "") && Te(r, n), o & /*result*/
+      s[0].origin.url + "") && xe(r, n), o & /*result*/
       1 && i !== (i = /*result*/
       s[0].origin.url) && b(e, "href", i);
     },
@@ -12035,7 +12035,7 @@ function cp(t) {
       var m, F;
       (!c || v & /*result*/
       1) && i !== (i = /*result*/
-      ((m = _[0]) == null ? void 0 : m.title) + "") && Te(s, i), /*paragraphs*/
+      ((m = _[0]) == null ? void 0 : m.title) + "") && xe(s, i), /*paragraphs*/
       _[2][0] ? f ? (f.p(_, v), v & /*paragraphs*/
       4 && w(f, 1)) : (f = to(_), f.c(), w(f, 1), f.m(a, l)) : f && (ge(), P(f, 1, 1, () => {
         f = null;
@@ -12049,7 +12049,7 @@ function cp(t) {
       P(f), c = !1;
     },
     d(_) {
-      _ && T(e), f && f.d(), h && h.d(), u = !1, Oe(d);
+      _ && T(e), f && f.d(), h && h.d(), u = !1, Pe(d);
     }
   };
 }
@@ -12087,7 +12087,7 @@ function up(t, e, n) {
 }
 class Tl extends je {
   constructor(e) {
-    super(), Ce(this, e, up, cp, Fe, { result: 0 }, lp);
+    super(), Fe(this, e, up, cp, Oe, { result: 0 }, lp);
   }
 }
 const { window: Rl } = xo;
@@ -12299,7 +12299,7 @@ function hp(t) {
       ) : (
         /*$_*/
         i[8]("answer.sources")
-      )) + "") && Te(r, n);
+      )) + "") && xe(r, n);
     },
     d(i) {
       i && T(e);
@@ -12396,7 +12396,7 @@ function gp(t, e, n) {
 }
 class vp extends je {
   constructor(e) {
-    super(), Ce(this, e, gp, pp, Fe, { answer: 0, rank: 1, hideFeedback: 2 }, dp);
+    super(), Fe(this, e, gp, pp, Oe, { answer: 0, rank: 1, hideFeedback: 2 }, dp);
   }
 }
 function _p(t) {
@@ -12514,7 +12514,7 @@ function bp(t) {
     p(r, i) {
       i & /*$_*/
       8 && e !== (e = /*$_*/
-      r[3]("error.search") + "") && Te(n, e);
+      r[3]("error.search") + "") && xe(n, e);
     },
     d(r) {
       r && T(n);
@@ -12536,7 +12536,7 @@ function wp(t) {
     p(r, i) {
       i & /*$_*/
       8 && e !== (e = /*$_*/
-      r[3]("error.answer-feature-blocked") + "") && Te(n, e);
+      r[3]("error.answer-feature-blocked") + "") && xe(n, e);
     },
     d(r) {
       r && T(n);
@@ -12558,7 +12558,7 @@ function kp(t) {
     p(r, i) {
       i & /*$_*/
       8 && e !== (e = /*$_*/
-      r[3]("error.service-overloaded") + "") && Te(n, e);
+      r[3]("error.service-overloaded") + "") && xe(n, e);
     },
     d(r) {
       r && T(n);
@@ -12603,7 +12603,7 @@ function Ep(t, e, n) {
 }
 class Ap extends je {
   constructor(e) {
-    super(), Ce(this, e, Ep, Sp, Fe, {}, _p);
+    super(), Fe(this, e, Ep, Sp, Oe, {}, _p);
   }
 }
 function Ip(t) {
@@ -12635,9 +12635,9 @@ function fo(t) {
     p(u, d) {
       d & /*entityRelations*/
       1 && r !== (r = /*name*/
-      u[4] + "") && Te(i, r), d & /*entityRelations*/
+      u[4] + "") && xe(i, r), d & /*entityRelations*/
       1 && l !== (l = /*related*/
-      u[5].join(", ") + "") && Te(c, l);
+      u[5].join(", ") + "") && xe(c, l);
     },
     d(u) {
       u && T(e);
@@ -12670,7 +12670,7 @@ function ho(t) {
     p(c, u) {
       if (u & /*entityRelations*/
       1 && r !== (r = /*entity*/
-      c[1].entity + "") && Te(i, r), u & /*Object, entityRelations*/
+      c[1].entity + "") && xe(i, r), u & /*Object, entityRelations*/
       1) {
         a = Object.entries(
           /*entity*/
@@ -12740,7 +12740,7 @@ function Tp(t, e, n) {
 }
 class Rp extends je {
   constructor(e) {
-    super(), Ce(this, e, Tp, xp, Fe, { entityRelations: 0 }, Ip);
+    super(), Fe(this, e, Tp, xp, Oe, { entityRelations: 0 }, Ip);
   }
 }
 var Pl = typeof window < "u" ? window : {};
@@ -12793,11 +12793,6 @@ function go(t) {
         /*$showResults*/
         t[5] && !/*$isEmptySearchQuery*/
         t[6]
-      ), Ie(
-        n,
-        "--answer-height",
-        /*answerHeight*/
-        t[3] + "px"
       ), b(e, "class", "backdrop");
     },
     m(d, f) {
@@ -12829,12 +12824,6 @@ function go(t) {
         /*$showResults*/
         d[5] && !/*$isEmptySearchQuery*/
         d[6]
-      ), f[0] & /*answerHeight*/
-      8 && Ie(
-        n,
-        "--answer-height",
-        /*answerHeight*/
-        d[3] + "px"
       );
     },
     i(d) {
@@ -12844,7 +12833,7 @@ function go(t) {
       P(i.$$.fragment, d), P(u), a = !1;
     },
     d(d) {
-      d && T(e), re(i), u && u.d(), l = !1, Oe(c);
+      d && T(e), re(i), u && u.d(), l = !1, Pe(c);
     }
   };
 }
@@ -13000,7 +12989,7 @@ function $p(t) {
     p(l, c) {
       c[0] & /*$_*/
       1024 && n !== (n = /*$_*/
-      l[10]("results.empty") + "") && Te(r, n);
+      l[10]("results.empty") + "") && xe(r, n);
     },
     i: z,
     o: z,
@@ -13051,7 +13040,7 @@ function _o(t) {
     p(s, o) {
       o[0] & /*$_*/
       1024 && r !== (r = /*$_*/
-      s[10]("error.partial-results") + "") && Te(i, r);
+      s[10]("error.partial-results") + "") && xe(i, r);
     },
     d(s) {
       s && T(e);
@@ -13244,7 +13233,7 @@ function Mp(t) {
     p(i, s) {
       s[0] & /*$_*/
       1024 && n !== (n = /*$_*/
-      i[10]("error.search") + "") && Te(r, n);
+      i[10]("error.search") + "") && xe(r, n);
     },
     d(i) {
       i && T(e);
@@ -13266,7 +13255,7 @@ function Np(t) {
     p(i, s) {
       s[0] & /*$_*/
       1024 && n !== (n = /*$_*/
-      i[10]("error.feature-blocked") + "") && Te(r, n);
+      i[10]("error.feature-blocked") + "") && xe(r, n);
     },
     d(i) {
       i && T(e);
@@ -13335,7 +13324,7 @@ function zp(t, e, n) {
     et.dispatchEvent && et.dispatchEvent(new CustomEvent(E, { detail: Be, composed: !0 }));
   }, Qe = Dn.pipe(ia(1500));
   q(t, Qe, (E) => n(17, _ = E));
-  let dt, ye = !1, Pe = !1, we;
+  let dt, ye = !1, Re = !1, we;
   Sn(() => {
     I && pu(I), me = (Y ? Y.split(",").filter((Be) => !!Be) : []).reduce((Be, $t) => ({ ...Be, [$t]: !0 }), {}), Df(
       {
@@ -13363,7 +13352,7 @@ function zp(t, e, n) {
     });
   }
   function Ue() {
-    n(2, Pe = !Pe);
+    n(2, Re = !Re);
   }
   function kr(E) {
     E.key === "Escape" && Ue();
@@ -13385,7 +13374,7 @@ function zp(t, e, n) {
   }, [
     dt,
     ye,
-    Pe,
+    Re,
     we,
     r,
     i,
@@ -13429,7 +13418,7 @@ class Dp extends Po {
   constructor(e) {
     super();
     const n = document.createElement("style");
-    n.textContent = ".nuclia-widget{--color-dark-stronger:var(--custom-color-dark-stronger, #000);--color-dark-stronger-rgb:0, 0, 0;--color-light-stronger:#fff;--color-neutral-regular:hsl(0, 0%, 44%);--color-neutral-light:hsl(0, 0%, 77%);--color-neutral-lighter:hsl(0, 0%, 90%);--color-neutral-lightest:hsl(240, 7%, 97%);--color-primary-stronger:hsl(336, 100%, 24%);--color-primary-strong:hsl(336, 100%, 36%);--color-primary-regular:hsl(336, 100%, 50%);--color-primary-light:hsl(336, 100%, 73%);--color-primary-lighter:hsl(336, 100%, 90%);--color-primary-lightest:hsl(336, 100%, 96%);--color-secondary-stronger:hsl(51, 78%, 32%);--color-secondary-strong:hsl(51, 100%, 41%);--color-secondary-regular:hsl(51, 100%, 55%);--color-secondary-light:hsl(51, 100%, 75%);--color-secondary-lighter:hsl(51, 100%, 86%);--color-secondary-lightest:hsl(51, 100%, 95%);--color-tertiary-stronger:hsl(249, 100%, 24%);--color-tertiary-strong:hsl(249, 100%, 40%);--color-tertiary-regular:hsl(249, 100%, 50%);--color-tertiary-light:hsl(249, 100%, 65%);--color-tertiary-lighter:hsl(249, 100%, 92%);--color-tertiary-lightest:hsl(249, 100%, 96%);--spacer:8px;--rhythm-0_25:calc(var(--spacer) * 0.25);--rhythm-0_5:calc(var(--spacer) * 0.5);--rhythm-1:var(--spacer);--rhythm-1_5:calc(var(--spacer) * 1.5);--rhythm-2:calc(var(--spacer) * 2);--rhythm-2_5:calc(var(--spacer) * 2.5);--rhythm-3:calc(var(--spacer) * 3);--rhythm-4:calc(var(--spacer) * 4);--rhythm-5:calc(var(--spacer) * 5);--rhythm-6:calc(var(--spacer) * 6);--rhythm-7:calc(var(--spacer) * 7);--rhythm-8:calc(var(--spacer) * 8);--rhythm-9:calc(var(--spacer) * 9);--rhythm-10:calc(var(--spacer) * 10);--rhythm-11:calc(var(--spacer) * 11);--rhythm-12:calc(var(--spacer) * 12);--rhythm-14:calc(var(--spacer) * 14);--rhythm-16:calc(var(--spacer) * 16);--rhythm-20:calc(var(--spacer) * 20);--rhythm-22:calc(var(--spacer) * 22);--rhythm-24:calc(var(--spacer) * 24);--rhythm-27:calc(var(--spacer) * 27);--rhythm-28:calc(var(--spacer) * 28);--rhythm-32:calc(var(--spacer) * 32);--rhythm-36:calc(var(--spacer) * 36);--rhythm-39:calc(var(--spacer) * 39);--rhythm-40:calc(var(--spacer) * 40);--rhythm-46:calc(var(--spacer) * 46);--rhythm-48:calc(var(--spacer) * 48);--rhythm-53:calc(var(--spacer) * 53);--rhythm-56:calc(var(--spacer) * 56);--rhythm-64:calc(var(--spacer) * 64);--rhythm-75:calc(var(--spacer) * 75);--rhythm-80:calc(var(--spacer) * 80);--font-size-base:16px;--font-size-medium:14px;--font-size-small:12px;--font-size-xsmall:10px;--font-weight-body:300;--font-weight-medium:500;--font-weight-semi-bold:600;--font-weight-bold:700;--nuclia-family:Inter, sans-serif;--font-family-body:var(--custom-font-family-body, var(--nuclia-family));--font-size-title-m:var(--font-size-base);--font-size-title-s:var(--font-size-medium);--font-weight-title-m:var(--font-weight-semi-bold);--line-height-body-xs:var(--font-size-base);--line-height-body-s:calc(var(--font-size-base) * 1.125);--line-height-body:calc(var(--font-size-base) * 1.25);--line-height-title-m-mobile:calc(var(--font-size-base) * 1.625);--line-height-title-m:calc(var(--font-size-base) * 1.75);--line-height-title-s:calc(var(--font-size-base) * 1.375);--line-height-title-xs:calc(var(--font-size-base) * 1.375);--line-height-title-xxs:calc(var(--font-size-base) * 1.375);--duration--superfast:0.16s;--duration--fast:0.24s;--duration--moderate:0.48s;--duration--slow:0.8s;--transition-superfast:var(--duration--superfast) ease-in-out;--transition-fast:var(--duration--fast) ease;--transition-moderate:var(--duration--moderate) ease;--transition-slow:var(--duration--slow) cubic-bezier(0.6, 0, 0.4, 1);--border-radius:var(--rhythm-0_25);--color-backdrop:rgba(var(--color-dark-stronger-rgb), 0.5);--default-modal-width:calc(100vw - var(--rhythm-1_5));--shadow-modal:0 var(--rhythm-0_25) var(--rhythm-1) rgba(var(--color-dark-stronger-rgb), 0.2);--z-index-modal:10010;--z-index-modal-backdrop:10000;--resource-modal-width:var(--default-modal-width);--resource-modal-width-md:80vw;--resource-modal-height:calc(100vh - var(--rhythm-16));--resource-modal-height-md:85vh;--color-scrollbar-track:var(--color-light-stronger);--color-scrollbar-thumb:var(--color-dark-stronger);--focus-shadow:inset 0 0 0 var(--rhythm-0_25) var(--color-primary-lighter);--search-bar-border-color:var(--border-color);--search-bar-border-focus-color:var(--border-focus-color);--search-bar-border:1px solid var(--search-bar-border-color);--search-bar-border-focus:1px solid var(--search-bar-border-focus-color);--search-bar-border-radius:0;--search-bar-max-width:var(--rhythm-56);--expander-header-height:var(--rhythm-5);--player-bar-height:var(--rhythm-5);--border-color:var(--custom-border-color, var(--color-dark-stronger));--border-focus-color:var(--custom-border-focus-color, var(--color-primary-regular));--link-color:var(--custom-link-color, var(--color-primary-regular));--text-color:var(--custom-text-color, var(--color-dark-stronger));--selected-text-color:var(--custom-selected-text-color, inherit);--selected-background-color:var(--custom-selected-background-color, var(--color-primary-lightest));--hover-background-color:var(--custom-hover-background-color, var(--color-neutral-lightest));--thumbnail-background-color:var(--custom-thumbnail-background-color, var(--color-neutral-lightest));--modal-background-color:var(--custom-modal-background-color, var(--color-neutral-lighter));--dropdown-background-color:var(--custom-dropdown-background-color, var(--color-light-stronger));--container-background-color:var(--custom-container-background-color, var(--color-light-stronger));box-sizing:border-box;color:var(--text-color);font-family:var(--font-family-body);font-size:var(--font-size-base);font-weight:var(--font-weight-body);line-height:var(--line-height-body);text-align:left}.nuclia-widget.dark-mode{--border-color:var(--color-neutral-lightest);--text-color:var(--color-neutral-lightest);--selected-text-color:var(--color-dark-stronger);--hover-background-color:#2b2d30;--thumbnail-background-color:#2b2d30;--modal-background-color:#303136;--dropdown-background-color:#26282b;--container-background-color:#1f2023}.backdrop{--top-spacing:var(--rhythm-8);--side-spacing:var(--rhythm-2);align-items:start;background:rgba(0, 0, 0, 0.5);bottom:0;display:flex;justify-content:center;left:0;padding-top:var(--top-spacing);position:fixed;right:0;top:0;z-index:10000}.search-container{--search-bar-height:var(--rhythm-6);background:#fff;max-height:calc(100vh - var(--top-spacing) * 2);overflow:hidden;width:calc(100% - var(--side-spacing) * 2)}.search-container:not(.with-results){height:var(--search-bar-height)}.search-container.with-results .search-bar-container{border-bottom:1px solid var(--color-neutral-light)}.search-container .search-bar-container{position:sticky;top:0;z-index:1}.search-container .search-bar-container,.search-container .search-results-container{background:inherit}.search-container .search-results-container{--vertical-spacing:var(--rhythm-1)}.search-container .search-results-container .search-results{max-height:calc(100vh - var(--top-spacing) * 2 - var(--search-bar-height) - var(--answer-height) - var(--vertical-spacing) * 2);padding:var(--vertical-spacing) 0;overflow:auto}@media(max-width: 639px){.backdrop{max-height:calc(100vh - var(--top-spacing) * 2 - var(--rhythm-2))}}@media(min-width: 640px){.backdrop{--top-spacing:var(--rhythm-14)}.search-container{max-width:784px;width:80%}}", this.shadowRoot.appendChild(n), Ce(
+    n.textContent = ".nuclia-widget{--color-dark-stronger:var(--custom-color-dark-stronger, #000);--color-dark-stronger-rgb:0, 0, 0;--color-light-stronger:#fff;--color-neutral-regular:hsl(0, 0%, 44%);--color-neutral-light:hsl(0, 0%, 77%);--color-neutral-lighter:hsl(0, 0%, 90%);--color-neutral-lightest:hsl(240, 7%, 97%);--color-primary-stronger:hsl(336, 100%, 24%);--color-primary-strong:hsl(336, 100%, 36%);--color-primary-regular:hsl(336, 100%, 50%);--color-primary-light:hsl(336, 100%, 73%);--color-primary-lighter:hsl(336, 100%, 90%);--color-primary-lightest:hsl(336, 100%, 96%);--color-secondary-stronger:hsl(51, 78%, 32%);--color-secondary-strong:hsl(51, 100%, 41%);--color-secondary-regular:hsl(51, 100%, 55%);--color-secondary-light:hsl(51, 100%, 75%);--color-secondary-lighter:hsl(51, 100%, 86%);--color-secondary-lightest:hsl(51, 100%, 95%);--color-tertiary-stronger:hsl(249, 100%, 24%);--color-tertiary-strong:hsl(249, 100%, 40%);--color-tertiary-regular:hsl(249, 100%, 50%);--color-tertiary-light:hsl(249, 100%, 65%);--color-tertiary-lighter:hsl(249, 100%, 92%);--color-tertiary-lightest:hsl(249, 100%, 96%);--spacer:8px;--rhythm-0_25:calc(var(--spacer) * 0.25);--rhythm-0_5:calc(var(--spacer) * 0.5);--rhythm-1:var(--spacer);--rhythm-1_5:calc(var(--spacer) * 1.5);--rhythm-2:calc(var(--spacer) * 2);--rhythm-2_5:calc(var(--spacer) * 2.5);--rhythm-3:calc(var(--spacer) * 3);--rhythm-4:calc(var(--spacer) * 4);--rhythm-5:calc(var(--spacer) * 5);--rhythm-6:calc(var(--spacer) * 6);--rhythm-7:calc(var(--spacer) * 7);--rhythm-8:calc(var(--spacer) * 8);--rhythm-9:calc(var(--spacer) * 9);--rhythm-10:calc(var(--spacer) * 10);--rhythm-11:calc(var(--spacer) * 11);--rhythm-12:calc(var(--spacer) * 12);--rhythm-14:calc(var(--spacer) * 14);--rhythm-16:calc(var(--spacer) * 16);--rhythm-20:calc(var(--spacer) * 20);--rhythm-22:calc(var(--spacer) * 22);--rhythm-24:calc(var(--spacer) * 24);--rhythm-27:calc(var(--spacer) * 27);--rhythm-28:calc(var(--spacer) * 28);--rhythm-32:calc(var(--spacer) * 32);--rhythm-36:calc(var(--spacer) * 36);--rhythm-39:calc(var(--spacer) * 39);--rhythm-40:calc(var(--spacer) * 40);--rhythm-46:calc(var(--spacer) * 46);--rhythm-48:calc(var(--spacer) * 48);--rhythm-53:calc(var(--spacer) * 53);--rhythm-56:calc(var(--spacer) * 56);--rhythm-64:calc(var(--spacer) * 64);--rhythm-75:calc(var(--spacer) * 75);--rhythm-80:calc(var(--spacer) * 80);--font-size-base:16px;--font-size-medium:14px;--font-size-small:12px;--font-size-xsmall:10px;--font-weight-body:300;--font-weight-medium:500;--font-weight-semi-bold:600;--font-weight-bold:700;--nuclia-family:Inter, sans-serif;--font-family-body:var(--custom-font-family-body, var(--nuclia-family));--font-size-title-m:var(--font-size-base);--font-size-title-s:var(--font-size-medium);--font-weight-title-m:var(--font-weight-semi-bold);--line-height-body-xs:var(--font-size-base);--line-height-body-s:calc(var(--font-size-base) * 1.125);--line-height-body:calc(var(--font-size-base) * 1.25);--line-height-title-m-mobile:calc(var(--font-size-base) * 1.625);--line-height-title-m:calc(var(--font-size-base) * 1.75);--line-height-title-s:calc(var(--font-size-base) * 1.375);--line-height-title-xs:calc(var(--font-size-base) * 1.375);--line-height-title-xxs:calc(var(--font-size-base) * 1.375);--duration--superfast:0.16s;--duration--fast:0.24s;--duration--moderate:0.48s;--duration--slow:0.8s;--transition-superfast:var(--duration--superfast) ease-in-out;--transition-fast:var(--duration--fast) ease;--transition-moderate:var(--duration--moderate) ease;--transition-slow:var(--duration--slow) cubic-bezier(0.6, 0, 0.4, 1);--border-radius:var(--rhythm-0_25);--color-backdrop:rgba(var(--color-dark-stronger-rgb), 0.5);--default-modal-width:calc(100vw - var(--rhythm-1_5));--shadow-modal:0 var(--rhythm-0_25) var(--rhythm-1) rgba(var(--color-dark-stronger-rgb), 0.2);--z-index-modal:10010;--z-index-modal-backdrop:10000;--resource-modal-width:var(--default-modal-width);--resource-modal-width-md:80vw;--resource-modal-height:calc(100vh - var(--rhythm-16));--resource-modal-height-md:85vh;--color-scrollbar-track:var(--color-light-stronger);--color-scrollbar-thumb:var(--color-dark-stronger);--focus-shadow:inset 0 0 0 var(--rhythm-0_25) var(--color-primary-lighter);--search-bar-border-color:var(--border-color);--search-bar-border-focus-color:var(--border-focus-color);--search-bar-border:1px solid var(--search-bar-border-color);--search-bar-border-focus:1px solid var(--search-bar-border-focus-color);--search-bar-border-radius:0;--search-bar-max-width:var(--rhythm-56);--expander-header-height:var(--rhythm-5);--player-bar-height:var(--rhythm-5);--border-color:var(--custom-border-color, var(--color-dark-stronger));--border-focus-color:var(--custom-border-focus-color, var(--color-primary-regular));--link-color:var(--custom-link-color, var(--color-primary-regular));--text-color:var(--custom-text-color, var(--color-dark-stronger));--selected-text-color:var(--custom-selected-text-color, inherit);--selected-background-color:var(--custom-selected-background-color, var(--color-primary-lightest));--hover-background-color:var(--custom-hover-background-color, var(--color-neutral-lightest));--thumbnail-background-color:var(--custom-thumbnail-background-color, var(--color-neutral-lightest));--modal-background-color:var(--custom-modal-background-color, var(--color-neutral-lighter));--dropdown-background-color:var(--custom-dropdown-background-color, var(--color-light-stronger));--container-background-color:var(--custom-container-background-color, var(--color-light-stronger));box-sizing:border-box;color:var(--text-color);font-family:var(--font-family-body);font-size:var(--font-size-base);font-weight:var(--font-weight-body);line-height:var(--line-height-body);text-align:left}.nuclia-widget.dark-mode{--border-color:var(--color-neutral-lightest);--text-color:var(--color-neutral-lightest);--selected-text-color:var(--color-dark-stronger);--hover-background-color:#2b2d30;--thumbnail-background-color:#2b2d30;--modal-background-color:#303136;--dropdown-background-color:#26282b;--container-background-color:#1f2023}.backdrop{--top-spacing:var(--rhythm-8);--side-spacing:var(--rhythm-2);align-items:start;background:rgba(0, 0, 0, 0.5);bottom:0;display:flex;justify-content:center;left:0;padding-top:var(--top-spacing);position:fixed;right:0;top:0;z-index:10000}.search-container{--search-bar-height:var(--rhythm-6);background:#fff;max-height:calc(100vh - var(--top-spacing) * 2);overflow:hidden;width:calc(100% - var(--side-spacing) * 2)}.search-container:not(.with-results){height:var(--search-bar-height)}.search-container.with-results .search-bar-container{border-bottom:1px solid var(--color-neutral-light)}.search-container .search-bar-container{position:sticky;top:0;z-index:1}.search-container .search-bar-container,.search-container .search-results-container{background:inherit}.search-container .search-results-container{--vertical-spacing:var(--rhythm-1)}.search-container .search-results-container .results{max-height:calc(100vh - var(--top-spacing) * 2 - var(--search-bar-height));overflow:auto}.search-container .search-results-container .search-results{padding:var(--vertical-spacing) 0}@media(max-width: 639px){.backdrop{max-height:calc(100vh - var(--top-spacing) * 2 - var(--rhythm-2))}}@media(min-width: 640px){.backdrop{--top-spacing:var(--rhythm-14)}.search-container{max-width:784px;width:80%}}", this.shadowRoot.appendChild(n), Fe(
       this,
       {
         target: this.shadowRoot,
@@ -13438,7 +13427,7 @@ class Dp extends Po {
       },
       zp,
       Lp,
-      Fe,
+      Oe,
       {
         backend: 24,
         zone: 25,
