@@ -114,7 +114,21 @@ Note: all theses steps are already implemented in this repository, but we detail
     @import '../../../libs/nuclia/libs/search-widget/src/common/common-style';
     ```
 
-- Implement your components in `src/components/` and use them in your widget
+- Implement your components in `src/components/` and use them in your widget.
+
+  In our example, we added `src/components/CreationDate.svelte`, implementing a component displaying the creation date of a resource. It is imported in `src/widgets/my-widget/SearchResults.svelte`:
+
+  ```ts
+  import CreationDate from '../../components/CreationDate.svelte';
+  ```
+
+  and inserted in the template just before the existing `ResultRow` component:
+
+  ```html
+  <CreationDate date="{result.created}" /> <ResultRow {result} />
+  ```
+
+  Note: In this case, we are just adding a new component, but you are free to copy and adapt an existing one like `ResultRow` to your needs. You will just need to import it from `../../components/` instead of `@nuclia/ui`.
 
 - You can see the result in dev mode in your browser by running:
 
