@@ -65,7 +65,7 @@ You can preview the production build with `npm run preview`.
 
 Note: all theses steps are already implemented in this repository, but we detail them here so you can reproduce them in your own project.
 
-- Create a new folder `src/widgets/my-widget` (`my-widget` is just how we named it in our example, you are free to choose any name)
+- Create a new folder `src/widgets/my-widget` (`my-widget` is just how we named it in our example, you are free to choose any name, just make sure to use the same name everywhere in the following steps and in `custom.vite.config.mjs`)
 
 - Copy all files from `libs/nuclia/libs/search-widget/src/widgets/search-widget/` to `src/widgets/my-widget`
 
@@ -75,7 +75,7 @@ Note: all theses steps are already implemented in this repository, but we detail
     ```ts
     import globalCss from '../../../libs/nuclia/libs/search-widget/src/common/_global.scss?inline';
     ```
-  - Replace all the other relative imports starting with `../..` with `@nuclia/ui`, like:
+  - Replace all the other relative imports starting with `../..` by `@nuclia/ui`, like:
 
     ```ts
     import { loadFonts, loadSvgSprite, setCDN } from '../../core/utils';
@@ -124,8 +124,9 @@ Note: all theses steps are already implemented in this repository, but we detail
 
   and inserted in the template just before the existing `ResultRow` component:
 
-  ```html
-  <CreationDate date="{result.created}" /> <ResultRow {result} />
+  ```js
+  <CreationDate date="{result.created}" />
+  <ResultRow {result} />
   ```
 
   Note: In this case, we are just adding a new component, but you are free to copy and adapt an existing one like `ResultRow` to your needs. You will just need to import it from `../../components/` instead of `@nuclia/ui`.
