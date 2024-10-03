@@ -10,7 +10,7 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write .",
-    "missdev": "npx missdev --output=../libs"
+    "missdev": "npx missdev --output=../libs --https"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
@@ -34,6 +34,7 @@
   "type": "module",
   "dependencies": {
     "date-fns": "^2.30.0",
+    "dompurify": "^3.1.7",
     "posthog-js": "^1.68.4",
     "rxjs": "^7.8.1",
     "turndown": "^7.1.2"
