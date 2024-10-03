@@ -1,16 +1,32 @@
-<svelte:options customElement="nuclia-search-bar" />
+<svelte:options customElement="nuclia-search-bar" accessors />
 
 <script lang="ts">
-  import { type KBStates, type WidgetFeatures } from '@nuclia/core';
-  import { initNuclia, resetNuclia } from '@nuclia/ui';
-  import { onMount } from 'svelte';
-  import { loadFonts, loadSvgSprite, setCDN } from '@nuclia/ui';
+  import {
+    getRAGImageStrategies,
+    getRAGStrategies,
+    type KBStates,
+    type Nuclia,
+    type RAGImageStrategy,
+    type RAGStrategy,
+    type WidgetFeatures,
+  } from '@nuclia/core';
+  import { downloadDump, getApiErrors, initNuclia, resetNuclia } from '@nuclia/ui';
+  import { createEventDispatcher, onMount } from 'svelte';
+  import { injectCustomCss, loadFonts, loadSvgSprite, setCDN } from '@nuclia/ui';
   import { setLang } from '@nuclia/ui';
   import { SearchInput } from '@nuclia/ui';
   import { setupTriggerSearch } from '@nuclia/ui';
   import globalCss from '../../../libs/nuclia/libs/search-widget/src/common/_global.scss?inline';
-  import { get_current_component } from 'svelte/internal';
-  import { widgetFeatures, widgetPlaceholder } from '@nuclia/ui';
+  import {
+    chatPlaceholder,
+    notEnoughDataMessage,
+    widgetFeatures,
+    widgetFilters,
+    widgetImageRagStrategies,
+    widgetJsonSchema,
+    widgetPlaceholder,
+    widgetRagStrategies,
+  } from '@nuclia/ui';
   import {
     activatePermalinks,
     activateTypeAheadSuggestions,
@@ -19,60 +35,148 @@
     initLabelStore,
     initUsageTracking,
     initViewer,
-    resetStatesAndEffects,
     setupTriggerGraphNerSearch,
   } from '@nuclia/ui';
-  import { searchQuery, triggerSearch } from '@nuclia/ui';
+  import {
+    entityRelations,
+    preselectedFilters,
+    searchFilters,
+    searchQuery,
+    triggerSearch,
+  } from '@nuclia/ui';
   import { typeAhead } from '@nuclia/ui';
-  import { injectCustomCss } from '@nuclia/ui';
+  import { chatError, type WidgetFilters } from '@nuclia/ui';
+  import { InfoCard } from '@nuclia/ui';
+  import { IconButton, Modal } from '@nuclia/ui';
+  import { BehaviorSubject, delay, filter, firstValueFrom } from 'rxjs';
 
   export let backend = 'https://nuclia.cloud/api';
   export let zone = 'europe-1';
-  export let knowledgebox;
+  export let knowledgebox: string;
   export let placeholder = '';
   export let lang = '';
   export let cdn = '';
   export let apikey = '';
-  export let kbslug = '';
   export let account = '';
   export let client = 'widget';
   export let state: KBStates = 'PUBLISHED';
   export let features = '';
   export let standalone = false;
+  export let proxy = false;
   export let mode = '';
   export let filters = '';
+  export let preselected_filters = '';
   export let cssPath = '';
+  export let prompt = '';
+  export let system_prompt = '';
+  export let generativemodel = '';
+  export let no_tracking = false;
+  export let rag_strategies = '';
+  export let rag_image_strategies = '';
+  export let not_enough_data_message = '';
+  export let ask_to_resource = '';
+  export let max_tokens: number | string | undefined = undefined;
+  export let max_output_tokens: number | string | undefined = undefined;
+  export let max_paragraphs: number | undefined = undefined;
+  export let query_prepend = '';
+  export let json_schema = '';
+  export let vectorset = '';
+  export let chat_placeholder = '';
+
+  let _ready = new BehaviorSubject(false);
+  const ready = _ready.asObservable().pipe(filter((r) => r));
+  export const onReady = () => firstValueFrom(ready);
+  export const onError = getApiErrors();
+  export const reset = () => resetNuclia();
+
+  let nucliaAPI: Nuclia;
+  export let initHook: (n: Nuclia) => void = () => {};
 
   $: darkMode = mode === 'dark';
+  $: {
+    widgetPlaceholder.set(placeholder || 'input.placeholder');
+  }
+  $: {
+    chatPlaceholder.set(chat_placeholder || 'answer.placeholder');
+  }
+  $: {
+    notEnoughDataMessage.set(not_enough_data_message);
+  }
 
   let _features: WidgetFeatures = {};
-  let _filters: { [key: 'labels' | 'entities']: boolean } = {};
+  let _filters: WidgetFilters = {};
+  let _jsonSchema: object | null = null;
+  let _ragStrategies: RAGStrategy[] = [];
+  let _ragImageStrategies: RAGImageStrategy[] = [];
+  let _max_tokens: number | undefined;
+  let _max_output_tokens: number | undefined;
 
-  export function search(query: string) {
+  export function search(query: string, filters?: string[]) {
     searchQuery.set(query);
+    if (filters) {
+      searchFilters.set({ filters });
+    }
     typeAhead.set(query || '');
     triggerSearch.next();
   }
 
   export function reloadSearch() {
-    console.log(`reloadSearch`);
+    console.log(`Reload search`);
     triggerSearch.next();
   }
 
-  const thisComponent = get_current_component();
+  export function logState() {
+    console.log(`Current widget configuration:`, {
+      _features,
+      _filters,
+      _ragStrategies,
+      prompt,
+      system_prompt,
+      generativemodel,
+      preselected_filters,
+      mode,
+      proxy,
+      standalone,
+      backend,
+      zone,
+      knowledgebox,
+      placeholder,
+      lang,
+      cdn,
+      apikey,
+      account,
+      not_enough_data_message,
+      vectorset,
+    });
+  }
+
+  export function dump() {
+    downloadDump();
+  }
+
+  const dispatch = createEventDispatcher();
   const dispatchCustomEvent = (name: string, detail: any) => {
-    thisComponent.dispatchEvent &&
-      thisComponent.dispatchEvent(
-        new CustomEvent(name, {
-          detail,
-          composed: true,
-        }),
-      );
+    dispatch(name, detail);
   };
 
-  let svgSprite;
-  let ready = false;
+  let svgSprite: string;
   let container: HTMLElement;
+
+  let showRelations = false;
+
+  ready.pipe(delay(200)).subscribe(() => {
+    initHook(nucliaAPI);
+
+    // any feature that calls the Nuclia API immediately at init time must be done here
+    if (_features.permalink) {
+      activatePermalinks();
+    }
+    if (_features.debug) {
+      nucliaAPI.events.dump().subscribe((data) => {
+        dispatchCustomEvent('logs', data);
+      });
+    }
+  });
 
   onMount(() => {
     if (cdn) {
@@ -88,47 +192,73 @@
     );
     if (Object.keys(_filters).length === 0) {
       _filters.labels = true;
-      //_filters.entities = true;  // TODO: Uncomment once entity filters work properly
+      _filters.entities = true;
     }
-    initNuclia(
+    _ragStrategies = getRAGStrategies(rag_strategies);
+    _ragImageStrategies = getRAGImageStrategies(rag_image_strategies);
+    try {
+      _jsonSchema = json_schema ? JSON.parse(json_schema) : null;
+    } catch (e) {
+      _jsonSchema = null;
+    }
+    _max_tokens = typeof max_tokens === 'string' ? parseInt(max_tokens, 10) : max_tokens;
+    _max_output_tokens =
+      typeof max_output_tokens === 'string' ? parseInt(max_output_tokens, 10) : max_output_tokens;
+
+    nucliaAPI = initNuclia(
       {
         backend,
         zone,
         knowledgeBox: knowledgebox,
         client,
         apiKey: apikey,
-        kbSlug: kbslug,
         standalone,
+        proxy,
         account,
+        accountId: account,
       },
       state,
       {
         highlight: true,
         features: _features,
+        prompt,
+        system_prompt,
+        generative_model: generativemodel,
+        ask_to_resource,
+        max_tokens: _max_tokens,
+        max_output_tokens: _max_output_tokens,
+        max_paragraphs,
+        query_prepend,
+        vectorset,
       },
+      no_tracking,
     );
 
     // Setup widget in the store
     widgetFeatures.set(_features);
-    if (placeholder) {
-      widgetPlaceholder.set(placeholder);
-    }
+    widgetFilters.set(_filters);
+    widgetRagStrategies.set(_ragStrategies);
+    widgetImageRagStrategies.set(_ragImageStrategies);
+    widgetJsonSchema.set(_jsonSchema);
+
     if (_features.filter) {
-      if (_filters.labels) {
+      if (_filters.labels || _filters.labelFamilies) {
         initLabelStore();
       }
       if (_filters.entities) {
         initEntitiesStore();
       }
     }
+    if (preselected_filters) {
+      preselectedFilters.set(preselected_filters);
+    }
     if (_features.answers) {
       initAnswer();
     }
-
     loadFonts();
     loadSvgSprite().subscribe((sprite) => (svgSprite = sprite));
 
-    if (_features.suggestions || _features.suggestEntities) {
+    if (_features.suggestions || _features.autocompleteFromNERs) {
       activateTypeAheadSuggestions();
     }
 
@@ -137,22 +267,24 @@
 
     setupTriggerSearch(dispatchCustomEvent);
     initViewer();
-    if (_features.permalink) {
-      activatePermalinks();
-    }
+
     if (_features.knowledgeGraph) {
       setupTriggerGraphNerSearch();
     }
-    initUsageTracking();
+    initUsageTracking(no_tracking);
     injectCustomCss(cssPath, container);
 
-    ready = true;
+    _ready.next(true);
 
-    return () => {
-      resetNuclia();
-      resetStatesAndEffects();
-    };
+    return () => resetNuclia();
   });
+
+  function displayRelations() {
+    showRelations = true;
+  }
+  function hideRelations() {
+    showRelations = false;
+  }
 </script>
 
 <svelte:element this="style">{@html globalCss}</svelte:element>
@@ -163,9 +295,25 @@
   class:dark-mode={darkMode}
   data-version="__NUCLIA_DEV_VERSION__"
 >
-  {#if ready && !!svgSprite}
-    <SearchInput />
+  {#if $ready && !!svgSprite}
+    <div class="search-box">
+      <SearchInput on:resetQuery={() => dispatchCustomEvent('resetQuery', '')} />
+
+      {#if $entityRelations.length > 0}
+        <IconButton icon="info" aspect="basic" on:click={displayRelations} />
+      {/if}
+    </div>
   {/if}
+
+  <Modal show={showRelations} on:close={hideRelations}>
+    <div class="close-button">
+      <IconButton icon="cross" aspect="basic" on:click={hideRelations} />
+    </div>
+    <div class="dialog-content">
+      <InfoCard entityRelations={$entityRelations} />
+    </div>
+  </Modal>
+
   <div id="nuclia-glyphs-sprite" hidden>
     {@html svgSprite}
   </div>

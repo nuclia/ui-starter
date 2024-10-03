@@ -2,13 +2,14 @@
 
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { debounceTime } from 'rxjs';
-  import { take } from 'rxjs/operators';
+  import { BehaviorSubject, debounceTime, firstValueFrom } from 'rxjs';
+  import { filter, take } from 'rxjs/operators';
   import { LoadingDots } from '@nuclia/ui';
   import globalCss from '../../../libs/nuclia/libs/search-widget/src/common/_global.scss?inline';
   import {
     _,
-    entityRelations,
+    debug,
+    downloadDump,
     getResultUniqueKey,
     getTrackingDataAfterResultsReceived,
     hasMore,
@@ -16,34 +17,46 @@
     hasSearchError,
     isAnswerEnabled,
     isEmptySearchQuery,
+    jsonAnswer,
+    jsonSchemaEnabled,
     loadFonts,
     loadMore,
     loadSvgSprite,
     logEvent,
-    onlyAnswers,
     pendingResults,
     resultList,
     searchError,
-    setWidgetActions,
     showResults,
     trackingReset,
+    type WidgetAction,
+    widgetActions,
+    widgetJsonSchema,
   } from '@nuclia/ui';
   import { InfiniteScroll } from '@nuclia/ui';
-  import { InfoCard, InitialAnswer, onClosePreview, ResultRow, Viewer } from '@nuclia/ui';
+  import { InitialAnswer, JsonAnswer, onClosePreview, ResultRow, Viewer } from '@nuclia/ui';
   import { injectCustomCss } from '@nuclia/ui';
+  import { Button } from '@nuclia/ui';
   import CreationDate from '../../components/CreationDate.svelte';
 
   export let cssPath = '';
   export let mode = '';
+  export let scrollableContainerSelector = '';
+  export let no_tracking = false;
   $: darkMode = mode === 'dark';
 
   const showLoading = pendingResults.pipe(debounceTime(1500));
 
-  export const setViewerMenu = setWidgetActions;
+  widgetActions.set([]);
+  export function setViewerMenu(actions: WidgetAction[]) {
+    widgetActions.set(actions);
+  }
 
   export function closePreview() {
     onClosePreview();
   }
+  let _ready = new BehaviorSubject(false);
+  const ready = _ready.asObservable().pipe(filter((r) => r));
+  export const onReady = () => firstValueFrom(ready);
 
   let svgSprite: string;
   let container: HTMLElement;
@@ -55,17 +68,23 @@
     loadFonts();
     loadSvgSprite().subscribe((sprite) => (svgSprite = sprite));
     injectCustomCss(cssPath, container);
+    _ready.next(true);
   });
 
   function renderingDone(node: HTMLElement) {
-    getTrackingDataAfterResultsReceived.pipe(take(1)).subscribe((tracking) => {
-      const tti = Date.now() - tracking.startTime;
-      logEvent('search', {
-        searchId: tracking.searchId || '',
-        tti,
+    if (!no_tracking) {
+      const tracking = getTrackingDataAfterResultsReceived.pipe(take(1)).subscribe((tracking) => {
+        const tti = Date.now() - tracking.startTime;
+        logEvent('search', {
+          searchId: tracking.searchId || '',
+          tti,
+        });
+        trackingReset.set(undefined);
       });
-      trackingReset.set(undefined);
-    });
+      return {
+        destroy: () => tracking.unsubscribe(),
+      };
+    }
   }
 
   const onLoadMore = () => loadMore.set();
@@ -88,7 +107,7 @@
           <strong>{$_('error.search')}</strong>
         {/if}
       </div>
-    {:else if !$pendingResults && $resultList.length === 0 && !$onlyAnswers}
+    {:else if !$pendingResults && $resultList.length === 0 && !$isAnswerEnabled}
       <strong>{$_('results.empty')}</strong>
       <div class="results-end" use:renderingDone />
     {:else}
@@ -98,9 +117,19 @@
         </div>
       {/if}
       <div class="results-container">
-        <div class="results" class:with-relations={$entityRelations.length > 0}>
+        <div class="results">
           {#if $isAnswerEnabled}
             <InitialAnswer />
+            {#if $jsonSchemaEnabled && $jsonAnswer}
+              <JsonAnswer jsonAnswer={$jsonAnswer} jsonSchema={$widgetJsonSchema} />
+            {/if}
+          {/if}
+          {#if !$isAnswerEnabled && $debug}
+            <div>
+              <Button aspect="basic" size="small" on:click={() => downloadDump()}>
+                <span>{$_('answer.download-log')}</span>
+              </Button>
+            </div>
           {/if}
           <div class="search-results">
             {#each $resultList as result, i (getResultUniqueKey(result))}
@@ -111,13 +140,14 @@
               {/if}
             {/each}
             {#if $hasMore}
-              <InfiniteScroll hasMore={$hasMore} on:loadMore={onLoadMore} />
+              <InfiniteScroll
+                hasMore={$hasMore}
+                {scrollableContainerSelector}
+                on:loadMore={onLoadMore}
+              />
             {/if}
           </div>
         </div>
-        {#if $entityRelations.length > 0}
-          <InfoCard entityRelations={$entityRelations} />
-        {/if}
       </div>
       {#if $showLoading}
         <LoadingDots />
