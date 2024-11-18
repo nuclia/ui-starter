@@ -25,7 +25,6 @@ We're using `missdev` to load and have access to Nuclia’s frontend dependencie
 
 - **@nuclia/core**: SDK allowing to integrate Nuclia services in your frontend application
 - **@nuclia/ui**: Svelte components and web components allowing to use Nuclia’s search capabilities
-- **@nuclia/prediction**: library used by Nuclia’s `SearchBar` widget
 
 The starter is a [SvelteKit](https://kit.svelte.dev/docs/introduction) application including:
 

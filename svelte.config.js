@@ -17,7 +17,6 @@ const config = {
     alias: {
       '@nuclia/core': 'libs/nuclia/libs/sdk-core/src',
       '@nuclia/ui': 'libs/nuclia/libs/search-widget/src',
-      '@nuclia/prediction': 'libs/nuclia/libs/prediction/src',
     },
   },
 };

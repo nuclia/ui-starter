@@ -15,10 +15,6 @@ export default defineConfig({
         find: '@nuclia/core',
         replacement: path.resolve(__dirname, './libs/nuclia/libs/sdk-core/src/index.ts'),
       },
-      {
-        find: '@nuclia/prediction',
-        replacement: path.resolve(__dirname, './libs/nuclia/libs/prediction/src/index.ts'),
-      },
     ],
   },
   build: {
