@@ -19,7 +19,6 @@
   import globalCss from '../../../libs/nuclia/libs/search-widget/src/common/_global.scss?inline';
   import {
     chatPlaceholder,
-    notEnoughDataMessage,
     widgetFeatures,
     widgetFilters,
     widgetImageRagStrategies,
@@ -98,9 +97,6 @@
   }
   $: {
     chatPlaceholder.set(chat_placeholder || 'answer.placeholder');
-  }
-  $: {
-    notEnoughDataMessage.set(not_enough_data_message);
   }
 
   let _features: WidgetFeatures = {};
@@ -219,7 +215,6 @@
       },
       state,
       {
-        highlight: true,
         features: _features,
         prompt,
         system_prompt,
@@ -230,6 +225,7 @@
         max_paragraphs,
         query_prepend,
         vectorset,
+        not_enough_data_message,
       },
       no_tracking,
     );
