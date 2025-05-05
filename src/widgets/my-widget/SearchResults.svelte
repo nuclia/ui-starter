@@ -9,12 +9,14 @@
   import {
     _,
     debug,
+    collapseTextBlocks,
     downloadDump,
     getResultUniqueKey,
     getTrackingDataAfterResultsReceived,
     hasMore,
     hasPartialResults,
     hasSearchError,
+    hideResults,
     isAnswerEnabled,
     isEmptySearchQuery,
     jsonAnswer,
@@ -31,11 +33,19 @@
     type WidgetAction,
     widgetActions,
     widgetJsonSchema,
+    rephrasedQuery,
   } from '@nuclia/ui';
   import { InfiniteScroll } from '@nuclia/ui';
-  import { InitialAnswer, JsonAnswer, onClosePreview, ResultRow, Viewer } from '@nuclia/ui';
+  import {
+    DebugInfo,
+    InitialAnswer,
+    JsonAnswer,
+    onClosePreview,
+    ResultRow,
+    Viewer,
+  } from '@nuclia/ui';
   import { injectCustomCss } from '@nuclia/ui';
-  import { Button } from '@nuclia/ui';
+  import { Button, IconButton } from '@nuclia/ui';
   import CreationDate from '../../components/CreationDate.svelte';
 
   export let cssPath = '';
@@ -44,7 +54,7 @@
   export let no_tracking = false;
   $: darkMode = mode === 'dark';
 
-  const showLoading = pendingResults.pipe(debounceTime(1500));
+  const showLoading = pendingResults.pipe(debounceTime(500));
 
   widgetActions.set([]);
   export function setViewerMenu(actions: WidgetAction[]) {
@@ -60,6 +70,7 @@
 
   let svgSprite: string;
   let container: HTMLElement;
+  let showMetadata = false;
 
   onMount(() => {
     if (pendingResults.getValue() || resultList.getValue().length > 0) {
@@ -99,59 +110,75 @@
   data-version="__NUCLIA_DEV_VERSION__"
 >
   {#if $showResults && !$isEmptySearchQuery}
-    {#if $hasSearchError && !$hasPartialResults}
-      <div class="error">
-        {#if $searchError?.status === 402}
-          <strong>{$_('error.feature-blocked')}</strong>
-        {:else}
-          <strong>{$_('error.search')}</strong>
-        {/if}
+    {#if $hasPartialResults}
+      <div class="partial-results-warning">
+        <strong>{$_('error.partial-results')}</strong>
       </div>
-    {:else if !$pendingResults && $resultList.length === 0 && !$isAnswerEnabled}
-      <strong>{$_('results.empty')}</strong>
-      <div class="results-end" use:renderingDone />
-    {:else}
-      {#if $hasPartialResults}
-        <div class="partial-results-warning">
-          <strong>{$_('error.partial-results')}</strong>
-        </div>
-      {/if}
-      <div class="results-container">
-        <div class="results">
-          {#if $isAnswerEnabled}
-            <InitialAnswer />
-            {#if $jsonSchemaEnabled && $jsonAnswer}
-              <JsonAnswer jsonAnswer={$jsonAnswer} jsonSchema={$widgetJsonSchema} />
+    {/if}
+    <div class="results-container">
+      <div class="results">
+        {#if $isAnswerEnabled}
+          <InitialAnswer />
+          {#if $jsonSchemaEnabled && $jsonAnswer}
+            <JsonAnswer jsonAnswer={$jsonAnswer} jsonSchema={$widgetJsonSchema} />
+          {/if}
+        {/if}
+        {#if !$isAnswerEnabled && $debug}
+          <div class="actions">
+            {#if $rephrasedQuery}
+              <div>
+                <IconButton
+                  aspect="basic"
+                  icon="info"
+                  size="small"
+                  kind="secondary"
+                  on:click={() => (showMetadata = true)}
+                />
+                <DebugInfo rephrasedQuery={$rephrasedQuery} bind:show={showMetadata} />
+              </div>
             {/if}
-          {/if}
-          {#if !$isAnswerEnabled && $debug}
-            <div>
-              <Button aspect="basic" size="small" on:click={() => downloadDump()}>
-                <span>{$_('answer.download-log')}</span>
-              </Button>
-            </div>
-          {/if}
-          <div class="search-results">
-            {#each $resultList as result, i (getResultUniqueKey(result))}
-              <CreationDate date={result.created} />
-              <ResultRow {result} />
-              {#if i === $resultList.length - 1}
-                <div class="results-end" use:renderingDone />
-              {/if}
-            {/each}
-            {#if $hasMore}
-              <InfiniteScroll
-                hasMore={$hasMore}
-                {scrollableContainerSelector}
-                on:loadMore={onLoadMore}
-              />
+            <Button aspect="basic" size="small" on:click={() => downloadDump()}>
+              <span>{$_('answer.download-log')}</span>
+            </Button>
+          </div>
+        {/if}
+
+        {#if $hasSearchError && !$hasPartialResults}
+          <div class="error">
+            {#if $searchError?.status === 402}
+              <strong>{$_('error.feature-blocked')}</strong>
+            {:else}
+              <strong>{$_('error.search')}</strong>
             {/if}
           </div>
-        </div>
+        {:else if !$pendingResults && $resultList.length === 0 && !$isAnswerEnabled}
+          <strong>{$_('results.empty')}</strong>
+          <div class="results-end" use:renderingDone />
+        {:else if $resultList.length > 0}
+          <div>
+            <h3 class="title-s">{$_('results.title')}</h3>
+            <div class="search-results" class:collapsed={$collapseTextBlocks}>
+              {#each $resultList as result, i (getResultUniqueKey(result))}
+                <CreationDate date={result.created} />
+                <ResultRow {result} answerRank={0} />
+                {#if i === $resultList.length - 1}
+                  <div class="results-end" use:renderingDone />
+                {/if}
+              {/each}
+              {#if $hasMore && !$hideResults}
+                <InfiniteScroll
+                  hasMore={$hasMore}
+                  {scrollableContainerSelector}
+                  on:loadMore={onLoadMore}
+                />
+              {/if}
+            </div>
+          </div>
+        {/if}
       </div>
-      {#if $showLoading}
-        <LoadingDots />
-      {/if}
+    </div>
+    {#if $showLoading}
+      <LoadingDots />
     {/if}
   {/if}
 
