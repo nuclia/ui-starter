@@ -1,21 +1,26 @@
-<script>
-  import { page } from '$app/stores';
+<script lang="ts">
+  import { page } from '$app/state';
+  interface Props {
+    children?: import('svelte').Snippet;
+  }
+
+  let { children }: Props = $props();
 </script>
 
 <nav
-  class:custom={$page.url.pathname === '/custom-theme'}
-  class:dark={$page.url.pathname === '/dark-mode'}
+  class:custom={page.url.pathname === '/custom-theme'}
+  class:dark={page.url.pathname === '/dark-mode'}
 >
-  <a href="/" class:active={$page.url.pathname === '/'}>Main widgets</a>
-  <a href="/api-results" class:active={$page.url.pathname === '/api-results'}>Search API results</a>
-  <a href="/dark-mode" class:active={$page.url.pathname === '/dark-mode'}>Dark mode</a>
-  <a href="/custom-theme" class:active={$page.url.pathname === '/custom-theme'}>Custom theme</a>
-  <a href="/breadcrumbs" class:active={$page.url.pathname === '/breadcrumbs'}>Breadcrumbs</a>
-  <a href="/custom-widget" class:active={$page.url.pathname === '/custom-widget'}>Custom widget</a>
+  <a href="/" class:active={page.url.pathname === '/'}>Main widgets</a>
+  <a href="/api-results" class:active={page.url.pathname === '/api-results'}>Search API results</a>
+  <a href="/dark-mode" class:active={page.url.pathname === '/dark-mode'}>Dark mode</a>
+  <a href="/custom-theme" class:active={page.url.pathname === '/custom-theme'}>Custom theme</a>
+  <a href="/breadcrumbs" class:active={page.url.pathname === '/breadcrumbs'}>Breadcrumbs</a>
+  <a href="/custom-widget" class:active={page.url.pathname === '/custom-widget'}>Custom widget</a>
 </nav>
 
 <main>
-  <slot />
+  {@render children?.()}
 </main>
 
 <style lang="scss">
