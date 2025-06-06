@@ -1,6 +1,6 @@
-<svelte:options customElement="nuclia-search-bar" accessors />
-
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import {
     parseRAGImageStrategies,
     parseRAGStrategies,
@@ -13,7 +13,6 @@
   } from '@nuclia/core';
   import { downloadDump, getApiErrors, initNuclia, resetNuclia } from '@nuclia/ui';
   import { createEventDispatcher, onMount } from 'svelte';
-  import { get_current_component } from 'svelte/internal';
   import { injectCustomCss, loadFonts, loadSvgSprite, loadWidgetConfig, setCDN } from '@nuclia/ui';
   import { setLang } from '@nuclia/ui';
   import { SearchInput } from '@nuclia/ui';
@@ -50,49 +49,8 @@
   import { type WidgetFilters } from '@nuclia/ui';
   import { InfoCard } from '@nuclia/ui';
   import { IconButton, Modal } from '@nuclia/ui';
-  import { BehaviorSubject, delay, filter, firstValueFrom } from 'rxjs';
+  import { BehaviorSubject, delay, filter, firstValueFrom, of } from 'rxjs';
 
-  export let backend = 'https://nuclia.cloud/api';
-  export let zone = 'europe-1';
-  export let knowledgebox: string;
-  export let placeholder = '';
-  export let lang = '';
-  export let cdn = '';
-  export let apikey = '';
-  export let account = '';
-  export let client = 'widget';
-  export let state: KBStates = 'PUBLISHED';
-  export let features = '';
-  export let standalone = false;
-  export let proxy = false;
-  export let mode = '';
-  export let filters = '';
-  export let preselected_filters = '';
-  export let cssPath = '';
-  export let prompt = '';
-  export let system_prompt = '';
-  export let rephrase_prompt = '';
-  export let generativemodel = '';
-  export let no_tracking = false;
-  export let rag_strategies = '';
-  export let rag_images_strategies = '';
-  export let not_enough_data_message = '';
-  export let ask_to_resource = '';
-  export let max_tokens: number | string | undefined = undefined;
-  export let max_output_tokens: number | string | undefined = undefined;
-  export let max_paragraphs: number | string | undefined = undefined;
-  export let query_prepend = '';
-  export let json_schema = '';
-  export let vectorset = '';
-  export let chat_placeholder = '';
-  export let audit_metadata = '';
-  export let reranker: Reranker | undefined = undefined;
-  export let citation_threshold: number | string | undefined = undefined;
-  export let rrf_boosting: number | string | undefined = undefined;
-  export let feedback: Widget.WidgetFeedback = 'answer';
-  export let copy_disclaimer: string | undefined = undefined;
-  export let metadata: string | undefined = undefined;
-  export let widget_id: string | undefined = undefined;
 
   let _ready = new BehaviorSubject(false);
   const ready = _ready.asObservable().pipe(filter((r) => r));
@@ -101,15 +59,103 @@
   export const reset = () => resetNuclia();
 
   let nucliaAPI: Nuclia;
-  export let initHook: (n: Nuclia) => void = () => {};
+  interface Props {
+    backend?: string;
+    zone?: string;
+    knowledgebox: string;
+    placeholder?: string;
+    lang?: string;
+    cdn?: string;
+    apikey?: string;
+    account?: string;
+    client?: string;
+    kbstate?: KBStates;
+    features?: string;
+    standalone?: boolean;
+    proxy?: boolean;
+    mode?: string;
+    filters?: string;
+    preselected_filters?: string;
+    csspath?: string;
+    prompt?: string;
+    system_prompt?: string;
+    rephrase_prompt?: string;
+    generativemodel?: string;
+    no_tracking?: boolean;
+    rag_strategies?: string;
+    rag_images_strategies?: string;
+    not_enough_data_message?: string;
+    ask_to_resource?: string;
+    max_tokens?: number | string | undefined;
+    max_output_tokens?: number | string | undefined;
+    max_paragraphs?: number | string | undefined;
+    query_prepend?: string;
+    json_schema?: string;
+    vectorset?: string;
+    chat_placeholder?: string;
+    audit_metadata?: string;
+    reranker?: Reranker | undefined;
+    citation_threshold?: number | string | undefined;
+    rrf_boosting?: number | string | undefined;
+    feedback?: Widget.WidgetFeedback;
+    copy_disclaimer?: string | undefined;
+    metadata?: string | undefined;
+    widget_id?: string | undefined;
+    initHook?: (n: Nuclia) => void;
+  }
 
-  $: darkMode = mode === 'dark';
-  $: {
+  let {
+    backend = 'https://nuclia.cloud/api',
+    zone = 'europe-1',
+    knowledgebox,
+    placeholder = '',
+    lang = $bindable(''),
+    cdn = '',
+    apikey = '',
+    account = '',
+    client = 'widget',
+    kbstate = 'PUBLISHED',
+    features = '',
+    standalone = false,
+    proxy = false,
+    mode = '',
+    filters = '',
+    preselected_filters = '',
+    csspath = '',
+    prompt = '',
+    system_prompt = '',
+    rephrase_prompt = '',
+    generativemodel = '',
+    no_tracking = false,
+    rag_strategies = '',
+    rag_images_strategies = '',
+    not_enough_data_message = '',
+    ask_to_resource = '',
+    max_tokens = undefined,
+    max_output_tokens = undefined,
+    max_paragraphs = undefined,
+    query_prepend = '',
+    json_schema = '',
+    vectorset = '',
+    chat_placeholder = '',
+    audit_metadata = '',
+    reranker = undefined,
+    citation_threshold = undefined,
+    rrf_boosting = undefined,
+    feedback = 'answer',
+    copy_disclaimer = undefined,
+    metadata = undefined,
+    widget_id = undefined,
+    initHook = () => {}
+  }: Props = $props();
+
+  let darkMode = $derived(mode === 'dark');
+  run(() => {
     chatPlaceholder.set(chat_placeholder || 'answer.placeholder');
-  }
-  $: {
+  });
+  run(() => {
     widgetPlaceholder.set(placeholder || 'input.placeholder');
-  }
+  });
 
   let _features: Widget.WidgetFeatures = {};
   let _filters: WidgetFilters = {};
@@ -178,10 +224,10 @@
     dispatch(name, detail);
   };
 
-  let svgSprite: string;
-  let container: HTMLElement;
+  let svgSprite: string = $state();
+  let container: HTMLElement = $state();
 
-  let showRelations = false;
+  let showRelations = $state(false);
 
   ready.pipe(delay(200)).subscribe(() => {
     initHook(nucliaAPI);
@@ -196,7 +242,7 @@
       });
     }
   });
-  const component = get_current_component();
+  // const component = get_current_component();
 
   onMount(() => {
     const nucliaOptions = {
@@ -210,113 +256,107 @@
       account,
       accountId: account,
     };
-    (widget_id ? loadWidgetConfig(widget_id, nucliaOptions) : of({})).subscribe((config) => {
-      if (Object.keys(config).length > 0) {
-        component.$set(config);
-      }
+    if (cdn) {
+      setCDN(cdn);
+    }
+    _features = (features ? features.split(',').filter((feature) => !!feature) : []).reduce(
+      (acc, current) => ({ ...acc, [current as keyof Widget.WidgetFeatures]: true }),
+      {},
+    );
+    _filters = (filters ? filters.split(',').filter((filter) => !!filter) : []).reduce(
+      (acc, current) => ({ ...acc, [current]: true }),
+      {},
+    );
+    if (Object.keys(_filters).length === 0) {
+      _filters.labels = true;
+    }
+    _ragStrategies = parseRAGStrategies(rag_strategies);
+    _ragImagesStrategies = parseRAGImageStrategies(rag_images_strategies);
+    try {
+      _jsonSchema = json_schema ? JSON.parse(json_schema) : null;
+    } catch (e) {
+      _jsonSchema = null;
+    }
+    _max_tokens = typeof max_tokens === 'string' ? parseInt(max_tokens, 10) : max_tokens;
+    _max_output_tokens =
+      typeof max_output_tokens === 'string' ? parseInt(max_output_tokens, 10) : max_output_tokens;
+    _citation_threshold =
+      typeof citation_threshold === 'string'
+        ? parseFloat(citation_threshold)
+        : citation_threshold;
+    _rrf_boosting = typeof rrf_boosting === 'string' ? parseFloat(rrf_boosting) : rrf_boosting;
+    _max_paragraphs =
+      typeof max_paragraphs === 'string' ? parseInt(max_paragraphs, 10) : max_paragraphs;
 
-      if (cdn) {
-        setCDN(cdn);
-      }
-      _features = (features ? features.split(',').filter((feature) => !!feature) : []).reduce(
-        (acc, current) => ({ ...acc, [current as keyof Widget.WidgetFeatures]: true }),
-        {},
-      );
-      _filters = (filters ? filters.split(',').filter((filter) => !!filter) : []).reduce(
-        (acc, current) => ({ ...acc, [current]: true }),
-        {},
-      );
-      if (Object.keys(_filters).length === 0) {
-        _filters.labels = true;
-      }
-      _ragStrategies = parseRAGStrategies(rag_strategies);
-      _ragImagesStrategies = parseRAGImageStrategies(rag_images_strategies);
-      try {
-        _jsonSchema = json_schema ? JSON.parse(json_schema) : null;
-      } catch (e) {
-        _jsonSchema = null;
-      }
-      _max_tokens = typeof max_tokens === 'string' ? parseInt(max_tokens, 10) : max_tokens;
-      _max_output_tokens =
-        typeof max_output_tokens === 'string' ? parseInt(max_output_tokens, 10) : max_output_tokens;
-      _citation_threshold =
-        typeof citation_threshold === 'string'
-          ? parseFloat(citation_threshold)
-          : citation_threshold;
-      _rrf_boosting = typeof rrf_boosting === 'string' ? parseFloat(rrf_boosting) : rrf_boosting;
-      _max_paragraphs =
-        typeof max_paragraphs === 'string' ? parseInt(max_paragraphs, 10) : max_paragraphs;
+    nucliaAPI = initNuclia(
+      nucliaOptions,
+      kbstate,
+      {
+        features: _features,
+        prompt,
+        system_prompt,
+        rephrase_prompt,
+        generative_model: generativemodel,
+        ask_to_resource,
+        max_tokens: _max_tokens,
+        max_output_tokens: _max_output_tokens,
+        max_paragraphs: _max_paragraphs,
+        query_prepend,
+        vectorset,
+        audit_metadata,
+        reranker,
+        citation_threshold: _citation_threshold,
+        rrf_boosting: _rrf_boosting,
+        feedback,
+        copy_disclaimer,
+        not_enough_data_message,
+        metadata,
+      },
+      no_tracking,
+    );
 
-      nucliaAPI = initNuclia(
-        nucliaOptions,
-        state,
-        {
-          features: _features,
-          prompt,
-          system_prompt,
-          rephrase_prompt,
-          generative_model: generativemodel,
-          ask_to_resource,
-          max_tokens: _max_tokens,
-          max_output_tokens: _max_output_tokens,
-          max_paragraphs: _max_paragraphs,
-          query_prepend,
-          vectorset,
-          audit_metadata,
-          reranker,
-          citation_threshold: _citation_threshold,
-          rrf_boosting: _rrf_boosting,
-          feedback,
-          copy_disclaimer,
-          not_enough_data_message,
-          metadata,
-        },
-        no_tracking,
-      );
+    // Setup widget in the store
+    widgetFeatures.set(_features);
+    widgetFilters.set(_filters);
+    widgetRagStrategies.set(_ragStrategies);
+    widgetImageRagStrategies.set(_ragImagesStrategies);
+    widgetJsonSchema.set(_jsonSchema);
+    widgetFeedback.set(feedback);
 
-      // Setup widget in the store
-      widgetFeatures.set(_features);
-      widgetFilters.set(_filters);
-      widgetRagStrategies.set(_ragStrategies);
-      widgetImageRagStrategies.set(_ragImagesStrategies);
-      widgetJsonSchema.set(_jsonSchema);
-      widgetFeedback.set(feedback);
-
-      if (_features.filter) {
-        if (_filters.labels || _filters.labelFamilies) {
-          initLabelStore();
-        }
-        if (_filters.entities) {
-          initEntitiesStore();
-        }
+    if (_features.filter) {
+      if (_filters.labels || _filters.labelFamilies) {
+        initLabelStore();
       }
-      if (preselected_filters) {
-        preselectedFilters.set(preselected_filters);
+      if (_filters.entities) {
+        initEntitiesStore();
       }
-      if (_features.answers) {
-        initAnswer();
-      }
-      loadFonts();
-      loadSvgSprite().subscribe((sprite) => (svgSprite = sprite));
+    }
+    if (preselected_filters) {
+      preselectedFilters.set(preselected_filters);
+    }
+    if (_features.answers) {
+      initAnswer();
+    }
+    loadFonts();
+    loadSvgSprite().subscribe((sprite) => (svgSprite = sprite));
 
-      if (_features.suggestions || _features.autocompleteFromNERs) {
-        activateTypeAheadSuggestions();
-      }
+    if (_features.suggestions || _features.autocompleteFromNERs) {
+      activateTypeAheadSuggestions();
+    }
 
-      lang = lang || window.navigator.language.split('-')[0] || 'en';
-      setLang(lang);
+    lang = lang || window.navigator.language.split('-')[0] || 'en';
+    setLang(lang);
 
-      setupTriggerSearch(dispatchCustomEvent);
-      initViewer();
+    setupTriggerSearch(dispatchCustomEvent);
+    initViewer();
 
-      if (_features.knowledgeGraph) {
-        setupTriggerGraphNerSearch();
-      }
-      initUsageTracking(no_tracking);
-      injectCustomCss(cssPath, container);
+    if (_features.knowledgeGraph) {
+      setupTriggerGraphNerSearch();
+    }
+    initUsageTracking(no_tracking);
+    injectCustomCss(csspath, container);
 
-      _ready.next(true);
-    });
+    _ready.next(true);
     return () => resetNuclia();
   });
 
@@ -326,9 +366,54 @@
   function hideRelations() {
     showRelations = false;
   }
+
+  export {
+  	backend,
+  	zone,
+  	knowledgebox,
+  	placeholder,
+  	lang,
+  	cdn,
+  	apikey,
+  	account,
+  	client,
+  	kbstate,
+  	features,
+  	standalone,
+  	proxy,
+  	mode,
+  	filters,
+  	preselected_filters,
+  	csspath,
+  	prompt,
+  	system_prompt,
+  	rephrase_prompt,
+  	generativemodel,
+  	no_tracking,
+  	rag_strategies,
+  	rag_images_strategies,
+  	not_enough_data_message,
+  	ask_to_resource,
+  	max_tokens,
+  	max_output_tokens,
+  	max_paragraphs,
+  	query_prepend,
+  	json_schema,
+  	vectorset,
+  	chat_placeholder,
+  	audit_metadata,
+  	reranker,
+  	citation_threshold,
+  	rrf_boosting,
+  	feedback,
+  	copy_disclaimer,
+  	metadata,
+  	widget_id,
+  	initHook,
+  }
 </script>
 
-<svelte:element this="style">{@html globalCss}</svelte:element>
+<svelte:element this={"style"}>{@html globalCss}</svelte:element>
 
 <div
   bind:this={container}

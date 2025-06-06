@@ -4,7 +4,7 @@
   import { onMount } from 'svelte';
   import { BehaviorSubject, debounceTime, firstValueFrom } from 'rxjs';
   import { filter, take } from 'rxjs/operators';
-  import { LoadingDots } from '@nuclia/ui';
+  import {LoadingDots} from '@nuclia/ui';
   import globalCss from '../../../libs/nuclia/libs/search-widget/src/common/_global.scss?inline';
   import {
     _,
@@ -34,25 +34,24 @@
     widgetActions,
     widgetJsonSchema,
     rephrasedQuery,
+    hasSortButton,
   } from '@nuclia/ui';
   import { InfiniteScroll } from '@nuclia/ui';
-  import {
-    DebugInfo,
-    InitialAnswer,
-    JsonAnswer,
-    onClosePreview,
-    ResultRow,
-    Viewer,
-  } from '@nuclia/ui';
+  import { DebugInfo, InitialAnswer, JsonAnswer, onClosePreview, ResultRow, Viewer } from '@nuclia/ui';
   import { injectCustomCss } from '@nuclia/ui';
   import { Button, IconButton } from '@nuclia/ui';
+  import { ResultsOrderButton } from '@nuclia/ui';
   import CreationDate from '../../components/CreationDate.svelte';
 
-  export let cssPath = '';
-  export let mode = '';
-  export let scrollableContainerSelector = '';
-  export let no_tracking = false;
-  $: darkMode = mode === 'dark';
+  interface Props {
+    csspath?: string;
+    mode?: string;
+    scrollableContainerSelector?: string;
+    no_tracking?: boolean;
+  }
+
+  let { csspath = '', mode = '', scrollableContainerSelector = '', no_tracking = false }: Props = $props();
+  let darkMode = $derived(mode === 'dark');
 
   const showLoading = pendingResults.pipe(debounceTime(500));
 
@@ -68,9 +67,9 @@
   const ready = _ready.asObservable().pipe(filter((r) => r));
   export const onReady = () => firstValueFrom(ready);
 
-  let svgSprite: string;
-  let container: HTMLElement;
-  let showMetadata = false;
+  let svgSprite: string = $state();
+  let container: HTMLElement = $state();
+  let showMetadata = $state(false);
 
   onMount(() => {
     if (pendingResults.getValue() || resultList.getValue().length > 0) {
@@ -78,7 +77,7 @@
     }
     loadFonts();
     loadSvgSprite().subscribe((sprite) => (svgSprite = sprite));
-    injectCustomCss(cssPath, container);
+    injectCustomCss(csspath, container);
     _ready.next(true);
   });
 
@@ -101,14 +100,13 @@
   const onLoadMore = () => loadMore.set();
 </script>
 
-<svelte:element this="style">{@html globalCss}</svelte:element>
+<svelte:element this={'style'}>{@html globalCss}</svelte:element>
 
 <div
   bind:this={container}
   class="nuclia-widget sw-video-results"
   class:dark-mode={darkMode}
-  data-version="__NUCLIA_DEV_VERSION__"
->
+  data-version="__NUCLIA_DEV_VERSION__">
   {#if $showResults && !$isEmptySearchQuery}
     {#if $hasPartialResults}
       <div class="partial-results-warning">
@@ -120,7 +118,9 @@
         {#if $isAnswerEnabled}
           <InitialAnswer />
           {#if $jsonSchemaEnabled && $jsonAnswer}
-            <JsonAnswer jsonAnswer={$jsonAnswer} jsonSchema={$widgetJsonSchema} />
+            <JsonAnswer
+              jsonAnswer={$jsonAnswer}
+              jsonSchema={$widgetJsonSchema} />
           {/if}
         {/if}
         {#if !$isAnswerEnabled && $debug}
@@ -132,12 +132,16 @@
                   icon="info"
                   size="small"
                   kind="secondary"
-                  on:click={() => (showMetadata = true)}
-                />
-                <DebugInfo rephrasedQuery={$rephrasedQuery} bind:show={showMetadata} />
+                  on:click={() => (showMetadata = true)} />
+                <DebugInfo
+                  rephrasedQuery={$rephrasedQuery}
+                  bind:show={showMetadata} />
               </div>
             {/if}
-            <Button aspect="basic" size="small" on:click={() => downloadDump()}>
+            <Button
+              aspect="basic"
+              size="small"
+              on:click={() => downloadDump()}>
               <span>{$_('answer.download-log')}</span>
             </Button>
           </div>
@@ -153,24 +157,40 @@
           </div>
         {:else if !$pendingResults && $resultList.length === 0 && !$isAnswerEnabled}
           <strong>{$_('results.empty')}</strong>
-          <div class="results-end" use:renderingDone />
+          <div
+            class="results-end"
+            use:renderingDone>
+          </div>
         {:else if $resultList.length > 0}
           <div>
-            <h3 class="title-s">{$_('results.title')}</h3>
-            <div class="search-results" class:collapsed={$collapseTextBlocks}>
+            <h3 class="title-s">
+              {$_('results.title')}
+              {#if $hasSortButton}
+                <div class="sort">
+                  <ResultsOrderButton></ResultsOrderButton>
+                </div>
+              {/if}
+            </h3>
+            <div
+              class="search-results"
+              class:collapsed={$collapseTextBlocks}>
               {#each $resultList as result, i (getResultUniqueKey(result))}
                 <CreationDate date={result.created} />
-                <ResultRow {result} answerRank={0} />
+                <ResultRow
+                  {result}
+                  answerRank={0} />
                 {#if i === $resultList.length - 1}
-                  <div class="results-end" use:renderingDone />
+                  <div
+                    class="results-end"
+                    use:renderingDone>
+                  </div>
                 {/if}
               {/each}
               {#if $hasMore && !$hideResults}
                 <InfiniteScroll
                   hasMore={$hasMore}
                   {scrollableContainerSelector}
-                  on:loadMore={onLoadMore}
-                />
+                  on:loadMore={onLoadMore} />
               {/if}
             </div>
           </div>
@@ -184,9 +204,13 @@
 
   <Viewer />
 
-  <div id="nuclia-glyphs-sprite" hidden>
+  <div
+    id="nuclia-glyphs-sprite"
+    hidden>
     {@html svgSprite}
   </div>
 </div>
 
-<style lang="scss" src="./SearchResults.scss"></style>
+<style
+  lang="scss"
+  src="./SearchResults.scss"></style>

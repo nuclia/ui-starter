@@ -1,5 +1,9 @@
 <script lang="ts">
-  export let date = '';
+  interface Props {
+    date?: string;
+  }
+
+  let { date = '' }: Props = $props();
   let displayDate = new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',

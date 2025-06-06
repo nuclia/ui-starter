@@ -40,8 +40,8 @@
 
     // Find results for the query
     // Features option defines the type of search we want to run, here we want fuzzy search and semantic results.
-    // See https://docs.stashify.cloud/docs/query/#features for details.
-    const features = [Search.Features.PARAGRAPH, Search.Features.VECTOR];
+    // See https://docs.nuclia.dev/docs/develop/js-sdk/enums/Search.Features for details.
+    const features = [Search.Features.KEYWORD, Search.Features.SEMANTIC];
     // In search options, we need to define which properties of the resources are returned.
     // NucliaSearchResults requires the following to display the results properly:
     const options = {

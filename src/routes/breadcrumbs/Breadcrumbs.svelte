@@ -1,12 +1,18 @@
 <script lang="ts">
-    export let breadcrumbs: {url: string, label: string}[];
+    interface Props {
+        path: string;
+    }
+
+    let { path }: Props = $props();
+
+    let breadcrumbs = $derived(path.split('-'));
 </script>
 
 <div class="breadcrumb-container">
     {#each breadcrumbs as breadcrumb, i}
-        <a href={breadcrumb.url}
+        <a href="#"
            target="_blank"
-           class:current={i === breadcrumbs.length - 1}>{breadcrumb.label}</a>
+           class:current={i === breadcrumbs.length - 1}>{breadcrumb}</a>
         {#if i < breadcrumbs.length - 1} > {/if}
     {/each}
 </div>
