@@ -76,7 +76,7 @@
     mode?: string;
     filters?: string;
     preselected_filters?: string;
-    cssPath?: string;
+    csspath?: string;
     prompt?: string;
     system_prompt?: string;
     rephrase_prompt?: string;
@@ -121,7 +121,7 @@
     mode = '',
     filters = '',
     preselected_filters = '',
-    cssPath = '',
+    csspath = '',
     prompt = '',
     system_prompt = '',
     rephrase_prompt = '',
@@ -256,113 +256,107 @@
       account,
       accountId: account,
     };
-    (widget_id ? loadWidgetConfig(widget_id, nucliaOptions) : of({})).subscribe((config) => {
-      // if (Object.keys(config).length > 0) {
-      //   component.$set(config);
-      // }
+    if (cdn) {
+      setCDN(cdn);
+    }
+    _features = (features ? features.split(',').filter((feature) => !!feature) : []).reduce(
+      (acc, current) => ({ ...acc, [current as keyof Widget.WidgetFeatures]: true }),
+      {},
+    );
+    _filters = (filters ? filters.split(',').filter((filter) => !!filter) : []).reduce(
+      (acc, current) => ({ ...acc, [current]: true }),
+      {},
+    );
+    if (Object.keys(_filters).length === 0) {
+      _filters.labels = true;
+    }
+    _ragStrategies = parseRAGStrategies(rag_strategies);
+    _ragImagesStrategies = parseRAGImageStrategies(rag_images_strategies);
+    try {
+      _jsonSchema = json_schema ? JSON.parse(json_schema) : null;
+    } catch (e) {
+      _jsonSchema = null;
+    }
+    _max_tokens = typeof max_tokens === 'string' ? parseInt(max_tokens, 10) : max_tokens;
+    _max_output_tokens =
+      typeof max_output_tokens === 'string' ? parseInt(max_output_tokens, 10) : max_output_tokens;
+    _citation_threshold =
+      typeof citation_threshold === 'string'
+        ? parseFloat(citation_threshold)
+        : citation_threshold;
+    _rrf_boosting = typeof rrf_boosting === 'string' ? parseFloat(rrf_boosting) : rrf_boosting;
+    _max_paragraphs =
+      typeof max_paragraphs === 'string' ? parseInt(max_paragraphs, 10) : max_paragraphs;
 
-      if (cdn) {
-        setCDN(cdn);
+    nucliaAPI = initNuclia(
+      nucliaOptions,
+      kbstate,
+      {
+        features: _features,
+        prompt,
+        system_prompt,
+        rephrase_prompt,
+        generative_model: generativemodel,
+        ask_to_resource,
+        max_tokens: _max_tokens,
+        max_output_tokens: _max_output_tokens,
+        max_paragraphs: _max_paragraphs,
+        query_prepend,
+        vectorset,
+        audit_metadata,
+        reranker,
+        citation_threshold: _citation_threshold,
+        rrf_boosting: _rrf_boosting,
+        feedback,
+        copy_disclaimer,
+        not_enough_data_message,
+        metadata,
+      },
+      no_tracking,
+    );
+
+    // Setup widget in the store
+    widgetFeatures.set(_features);
+    widgetFilters.set(_filters);
+    widgetRagStrategies.set(_ragStrategies);
+    widgetImageRagStrategies.set(_ragImagesStrategies);
+    widgetJsonSchema.set(_jsonSchema);
+    widgetFeedback.set(feedback);
+
+    if (_features.filter) {
+      if (_filters.labels || _filters.labelFamilies) {
+        initLabelStore();
       }
-      _features = (features ? features.split(',').filter((feature) => !!feature) : []).reduce(
-        (acc, current) => ({ ...acc, [current as keyof Widget.WidgetFeatures]: true }),
-        {},
-      );
-      _filters = (filters ? filters.split(',').filter((filter) => !!filter) : []).reduce(
-        (acc, current) => ({ ...acc, [current]: true }),
-        {},
-      );
-      if (Object.keys(_filters).length === 0) {
-        _filters.labels = true;
+      if (_filters.entities) {
+        initEntitiesStore();
       }
-      _ragStrategies = parseRAGStrategies(rag_strategies);
-      _ragImagesStrategies = parseRAGImageStrategies(rag_images_strategies);
-      try {
-        _jsonSchema = json_schema ? JSON.parse(json_schema) : null;
-      } catch (e) {
-        _jsonSchema = null;
-      }
-      _max_tokens = typeof max_tokens === 'string' ? parseInt(max_tokens, 10) : max_tokens;
-      _max_output_tokens =
-        typeof max_output_tokens === 'string' ? parseInt(max_output_tokens, 10) : max_output_tokens;
-      _citation_threshold =
-        typeof citation_threshold === 'string'
-          ? parseFloat(citation_threshold)
-          : citation_threshold;
-      _rrf_boosting = typeof rrf_boosting === 'string' ? parseFloat(rrf_boosting) : rrf_boosting;
-      _max_paragraphs =
-        typeof max_paragraphs === 'string' ? parseInt(max_paragraphs, 10) : max_paragraphs;
+    }
+    if (preselected_filters) {
+      preselectedFilters.set(preselected_filters);
+    }
+    if (_features.answers) {
+      initAnswer();
+    }
+    loadFonts();
+    loadSvgSprite().subscribe((sprite) => (svgSprite = sprite));
 
-      nucliaAPI = initNuclia(
-        nucliaOptions,
-        kbstate,
-        {
-          features: _features,
-          prompt,
-          system_prompt,
-          rephrase_prompt,
-          generative_model: generativemodel,
-          ask_to_resource,
-          max_tokens: _max_tokens,
-          max_output_tokens: _max_output_tokens,
-          max_paragraphs: _max_paragraphs,
-          query_prepend,
-          vectorset,
-          audit_metadata,
-          reranker,
-          citation_threshold: _citation_threshold,
-          rrf_boosting: _rrf_boosting,
-          feedback,
-          copy_disclaimer,
-          not_enough_data_message,
-          metadata,
-        },
-        no_tracking,
-      );
+    if (_features.suggestions || _features.autocompleteFromNERs) {
+      activateTypeAheadSuggestions();
+    }
 
-      // Setup widget in the store
-      widgetFeatures.set(_features);
-      widgetFilters.set(_filters);
-      widgetRagStrategies.set(_ragStrategies);
-      widgetImageRagStrategies.set(_ragImagesStrategies);
-      widgetJsonSchema.set(_jsonSchema);
-      widgetFeedback.set(feedback);
+    lang = lang || window.navigator.language.split('-')[0] || 'en';
+    setLang(lang);
 
-      if (_features.filter) {
-        if (_filters.labels || _filters.labelFamilies) {
-          initLabelStore();
-        }
-        if (_filters.entities) {
-          initEntitiesStore();
-        }
-      }
-      if (preselected_filters) {
-        preselectedFilters.set(preselected_filters);
-      }
-      if (_features.answers) {
-        initAnswer();
-      }
-      loadFonts();
-      loadSvgSprite().subscribe((sprite) => (svgSprite = sprite));
+    setupTriggerSearch(dispatchCustomEvent);
+    initViewer();
 
-      if (_features.suggestions || _features.autocompleteFromNERs) {
-        activateTypeAheadSuggestions();
-      }
+    if (_features.knowledgeGraph) {
+      setupTriggerGraphNerSearch();
+    }
+    initUsageTracking(no_tracking);
+    injectCustomCss(csspath, container);
 
-      lang = lang || window.navigator.language.split('-')[0] || 'en';
-      setLang(lang);
-
-      setupTriggerSearch(dispatchCustomEvent);
-      initViewer();
-
-      if (_features.knowledgeGraph) {
-        setupTriggerGraphNerSearch();
-      }
-      initUsageTracking(no_tracking);
-      injectCustomCss(cssPath, container);
-
-      _ready.next(true);
-    });
+    _ready.next(true);
     return () => resetNuclia();
   });
 
@@ -390,7 +384,7 @@
   	mode,
   	filters,
   	preselected_filters,
-  	cssPath,
+  	csspath,
   	prompt,
   	system_prompt,
   	rephrase_prompt,

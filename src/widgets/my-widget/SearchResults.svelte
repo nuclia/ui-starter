@@ -44,13 +44,13 @@
   import CreationDate from '../../components/CreationDate.svelte';
 
   interface Props {
-    cssPath?: string;
+    csspath?: string;
     mode?: string;
     scrollableContainerSelector?: string;
     no_tracking?: boolean;
   }
 
-  let { cssPath = '', mode = '', scrollableContainerSelector = '', no_tracking = false }: Props = $props();
+  let { csspath = '', mode = '', scrollableContainerSelector = '', no_tracking = false }: Props = $props();
   let darkMode = $derived(mode === 'dark');
 
   const showLoading = pendingResults.pipe(debounceTime(500));
@@ -77,7 +77,7 @@
     }
     loadFonts();
     loadSvgSprite().subscribe((sprite) => (svgSprite = sprite));
-    injectCustomCss(cssPath, container);
+    injectCustomCss(csspath, container);
     _ready.next(true);
   });
 
