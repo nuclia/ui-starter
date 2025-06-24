@@ -72,7 +72,7 @@ Note: all theses steps are already implemented in this repository, but we detail
 
   - Fix the `globalCss` import:
     ```ts
-    import globalCss from '../../../libs/nuclia/libs/search-widget/src/common/_global.scss?inline';
+    import globalCss from '../../../libs/nuclia/libs/search-widget/src/common/global.css?inline';
     ```
   - Replace all the other relative imports starting with `../..` by `@nuclia/ui`, like:
 
@@ -101,15 +101,12 @@ Note: all theses steps are already implemented in this repository, but we detail
   - In `SearchBar.svelte`, fix the `<style>` tag at the end:
 
     ```html
-    <style
-      lang="scss"
-      src="../../../libs/nuclia/libs/search-widget/src/common/common-style.scss"
-    ></style>
+    <style src="../../../libs/nuclia/libs/search-widget/src/common/common-style.css"></style>
     ```
 
-  - In `SearchResults.scss`, fix the import path similarly:
+  - In `SearchResults.css`, fix the import path similarly:
 
-    ```scss
+    ```css
     @import '../../../libs/nuclia/libs/search-widget/src/common/common-style';
     ```
 

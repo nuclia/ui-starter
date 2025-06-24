@@ -1,9 +1,9 @@
 <script>
-  import {page} from '$app/stores';
+  import { page } from '$app/stores';
 </script>
 
 <main class="main-description">
-  <h1>{$page.status} {$page.error.message}</h1>
+  <h1>{$page.status} {$page.error?.message}</h1>
 
   {#if $page.status >= 500}
     <p>This can be caused by outdated Nuclia dependencies.</p>
@@ -13,8 +13,8 @@
   {/if}
 </main>
 
-<style lang="scss">
-  @import "common";
+<style>
+  @import 'common.css';
 
   code {
     background: #e6e6e6;

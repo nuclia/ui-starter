@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { run } from 'svelte/legacy';
-
   import {
     parseRAGImageStrategies,
     parseRAGStrategies,
@@ -11,15 +9,36 @@
     type RAGStrategy,
     type Widget,
   } from '@nuclia/core';
-  import { downloadDump, getApiErrors, initNuclia, resetNuclia } from '@nuclia/ui';
-  import { createEventDispatcher, onMount } from 'svelte';
-  import { injectCustomCss, loadFonts, loadSvgSprite, loadWidgetConfig, setCDN } from '@nuclia/ui';
-  import { setLang } from '@nuclia/ui';
-  import { SearchInput } from '@nuclia/ui';
-  import { setupTriggerSearch } from '@nuclia/ui';
-  import globalCss from '../../../libs/nuclia/libs/search-widget/src/common/_global.scss?inline';
   import {
+    activatePermalinks,
+    activateTypeAheadSuggestions,
     chatPlaceholder,
+    downloadDump,
+    entityRelations,
+    getApiErrors,
+    IconButton,
+    InfoCard,
+    initAnswer,
+    initEntitiesStore,
+    initLabelStore,
+    initNuclia,
+    initUsageTracking,
+    initViewer,
+    injectCustomCss,
+    loadFonts,
+    loadSvgSprite,
+    Modal,
+    preselectedFilters,
+    resetNuclia,
+    searchFilters,
+    SearchInput,
+    searchQuery,
+    setCDN,
+    setLang,
+    setupTriggerGraphNerSearch,
+    setupTriggerSearch,
+    triggerSearch,
+    typeAhead,
     widgetFeatures,
     widgetFeedback,
     widgetFilters,
@@ -27,30 +46,11 @@
     widgetJsonSchema,
     widgetPlaceholder,
     widgetRagStrategies,
+    type WidgetFilters,
   } from '@nuclia/ui';
-  import {
-    activatePermalinks,
-    activateTypeAheadSuggestions,
-    initAnswer,
-    initEntitiesStore,
-    initLabelStore,
-    initUsageTracking,
-    initViewer,
-    setupTriggerGraphNerSearch,
-  } from '@nuclia/ui';
-  import {
-    entityRelations,
-    preselectedFilters,
-    searchFilters,
-    searchQuery,
-    triggerSearch,
-  } from '@nuclia/ui';
-  import { typeAhead } from '@nuclia/ui';
-  import { type WidgetFilters } from '@nuclia/ui';
-  import { InfoCard } from '@nuclia/ui';
-  import { IconButton, Modal } from '@nuclia/ui';
-  import { BehaviorSubject, delay, filter, firstValueFrom, of } from 'rxjs';
-
+  import { BehaviorSubject, delay, filter, firstValueFrom } from 'rxjs';
+  import { createEventDispatcher, onMount } from 'svelte';
+  import globalCss from '../../../libs/nuclia/libs/search-widget/src/common/global.css?inline';
 
   let _ready = new BehaviorSubject(false);
   const ready = _ready.asObservable().pipe(filter((r) => r));
@@ -146,14 +146,14 @@
     copy_disclaimer = undefined,
     metadata = undefined,
     widget_id = undefined,
-    initHook = () => {}
+    initHook = () => {},
   }: Props = $props();
 
   let darkMode = $derived(mode === 'dark');
-  run(() => {
+  $effect(() => {
     chatPlaceholder.set(chat_placeholder || 'answer.placeholder');
   });
-  run(() => {
+  $effect(() => {
     widgetPlaceholder.set(placeholder || 'input.placeholder');
   });
 
@@ -224,8 +224,8 @@
     dispatch(name, detail);
   };
 
-  let svgSprite: string = $state();
-  let container: HTMLElement = $state();
+  let svgSprite: string = $state('');
+  let container: HTMLElement | undefined = $state();
 
   let showRelations = $state(false);
 
@@ -281,9 +281,7 @@
     _max_output_tokens =
       typeof max_output_tokens === 'string' ? parseInt(max_output_tokens, 10) : max_output_tokens;
     _citation_threshold =
-      typeof citation_threshold === 'string'
-        ? parseFloat(citation_threshold)
-        : citation_threshold;
+      typeof citation_threshold === 'string' ? parseFloat(citation_threshold) : citation_threshold;
     _rrf_boosting = typeof rrf_boosting === 'string' ? parseFloat(rrf_boosting) : rrf_boosting;
     _max_paragraphs =
       typeof max_paragraphs === 'string' ? parseInt(max_paragraphs, 10) : max_paragraphs;
@@ -354,7 +352,9 @@
       setupTriggerGraphNerSearch();
     }
     initUsageTracking(no_tracking);
-    injectCustomCss(csspath, container);
+    if (container) {
+      injectCustomCss(csspath, container);
+    }
 
     _ready.next(true);
     return () => resetNuclia();
@@ -368,52 +368,52 @@
   }
 
   export {
-  	backend,
-  	zone,
-  	knowledgebox,
-  	placeholder,
-  	lang,
-  	cdn,
-  	apikey,
-  	account,
-  	client,
-  	kbstate,
-  	features,
-  	standalone,
-  	proxy,
-  	mode,
-  	filters,
-  	preselected_filters,
-  	csspath,
-  	prompt,
-  	system_prompt,
-  	rephrase_prompt,
-  	generativemodel,
-  	no_tracking,
-  	rag_strategies,
-  	rag_images_strategies,
-  	not_enough_data_message,
-  	ask_to_resource,
-  	max_tokens,
-  	max_output_tokens,
-  	max_paragraphs,
-  	query_prepend,
-  	json_schema,
-  	vectorset,
-  	chat_placeholder,
-  	audit_metadata,
-  	reranker,
-  	citation_threshold,
-  	rrf_boosting,
-  	feedback,
-  	copy_disclaimer,
-  	metadata,
-  	widget_id,
-  	initHook,
-  }
+    backend,
+    zone,
+    knowledgebox,
+    placeholder,
+    lang,
+    cdn,
+    apikey,
+    account,
+    client,
+    kbstate,
+    features,
+    standalone,
+    proxy,
+    mode,
+    filters,
+    preselected_filters,
+    csspath,
+    prompt,
+    system_prompt,
+    rephrase_prompt,
+    generativemodel,
+    no_tracking,
+    rag_strategies,
+    rag_images_strategies,
+    not_enough_data_message,
+    ask_to_resource,
+    max_tokens,
+    max_output_tokens,
+    max_paragraphs,
+    query_prepend,
+    json_schema,
+    vectorset,
+    chat_placeholder,
+    audit_metadata,
+    reranker,
+    citation_threshold,
+    rrf_boosting,
+    feedback,
+    copy_disclaimer,
+    metadata,
+    widget_id,
+    initHook,
+  };
 </script>
 
-<svelte:element this={"style"}>{@html globalCss}</svelte:element>
+<svelte:element this={'style'}>{@html globalCss}</svelte:element>
 
 <div
   bind:this={container}
