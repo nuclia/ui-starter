@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ResourceProperties, Search } from '@nuclia/core';
   import {
     activatePermalinks,
     initNuclia,
@@ -9,7 +10,6 @@
     searchResults,
     setLang,
   } from '@nuclia/ui';
-  import { ResourceProperties, Search } from '@nuclia/core';
   import { onDestroy, onMount } from 'svelte';
 
   const query = 'How the market will look like in 2023?';
@@ -63,7 +63,7 @@
   });
 </script>
 
-<header>
+<header class="page-header">
   <div class="main-description">
     <h2>Search API results</h2>
     <p>
@@ -77,6 +77,6 @@
 
 <NucliaSearchResults />
 
-<style lang="scss">
-  @import '../common';
+<style>
+  @import '../common.css';
 </style>

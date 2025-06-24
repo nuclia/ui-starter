@@ -1,4 +1,4 @@
-@import '../../../libs/nuclia/libs/search-widget/src/common/common-style';
+@import '../../../libs/nuclia/libs/search-widget/src/common/common-style.css';
 
 .error {
   width: var(--search-bar-max-width);

@@ -23,7 +23,7 @@
   {@render children?.()}
 </main>
 
-<style lang="scss">
+<style>
   main,
   nav {
     font-family: sans-serif;
@@ -41,7 +41,9 @@
     transition: background 0.16s ease-in-out;
 
     a {
-      transition: color 0.16s ease-in-out, background 0.16s ease-in-out;
+      transition:
+        color 0.16s ease-in-out,
+        background 0.16s ease-in-out;
       padding: 1rem;
       text-decoration: none;
     }
@@ -92,7 +94,9 @@
 
   :global(body) {
     margin: 0;
-    transition: color 0.16s ease-in-out, background 0.16s ease-in-out;
+    transition:
+      color 0.16s ease-in-out,
+      background 0.16s ease-in-out;
 
     --local-main-blue: #1f00cc;
 
