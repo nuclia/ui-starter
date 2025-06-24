@@ -33,7 +33,7 @@
   const onLoadMore = () => loadMore.set();
 </script>
 
-<header>
+<header class="page-header">
   <div class="main-description">
     <h2>Customized results</h2>
     <p>

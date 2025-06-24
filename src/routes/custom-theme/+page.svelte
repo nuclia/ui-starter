@@ -19,7 +19,7 @@
   });
 </script>
 
-<header>
+<header class="page-header">
   <div class="main-description">
     <h2>Custom theme</h2>
     <p>

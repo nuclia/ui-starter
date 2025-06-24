@@ -5,7 +5,7 @@
   let knowledgeBoxId = '16375869-1037-460d-8648-b3ee9c9206c0';
 </script>
 
-<header>
+<header class="page-header">
   <div class="main-description">
     <h2>Main widgets</h2>
     <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
