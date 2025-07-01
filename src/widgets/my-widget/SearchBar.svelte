@@ -12,7 +12,9 @@
   import {
     activatePermalinks,
     activateTypeAheadSuggestions,
-    chatPlaceholder,
+    chatPlaceholderDiscussion,
+    chatPlaceholderInitial,
+    DEFAULT_CHAT_PLACEHOLDER,
     downloadDump,
     entityRelations,
     getApiErrors,
@@ -151,7 +153,11 @@
 
   let darkMode = $derived(mode === 'dark');
   $effect(() => {
-    chatPlaceholder.set(chat_placeholder || 'answer.placeholder');
+    let [initialPlaceholder, discussionPlaceholder] = chat_placeholder.split('|');
+    chatPlaceholderInitial.set(initialPlaceholder || DEFAULT_CHAT_PLACEHOLDER);
+    chatPlaceholderDiscussion.set(
+      discussionPlaceholder || initialPlaceholder || DEFAULT_CHAT_PLACEHOLDER,
+    );
   });
   $effect(() => {
     widgetPlaceholder.set(placeholder || 'input.placeholder');
