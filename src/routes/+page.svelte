@@ -2,7 +2,7 @@
   import { NucliaSearchBar, NucliaSearchResults } from '@nuclia/ui';
 
   let searchBar: NucliaSearchBar | undefined = $state();
-  let knowledgeBoxId = '16375869-1037-460d-8648-b3ee9c9206c0';
+  let knowledgeBoxId = 'df8b4c24-2807-4888-ad6c-ae97357a638b';
 </script>
 
 <header class="page-header">
@@ -11,15 +11,15 @@
     <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
     <!-- svelte-ignore a11y_click_events_have_key_events -->
     <p>
-      We have indexed the market outlook reports from the biggest financial institutions world-wide.
+      We have indexed our tecnical documentation.
       <br />You can ask questions like "<strong
         class="example-query"
-        onclick={() => searchBar?.search('Will France be in recession in 2023?')}
-        >Will France be in recession in 2023?</strong
+        onclick={() => searchBar?.search('Can I ingest video files?')}
+        >Can I ingest video files?</strong
       >" or "<strong
         class="example-query"
-        onclick={() => searchBar?.search('Gold price evolution in 2023')}
-        >Gold price evolution in 2023</strong
+        onclick={() => searchBar?.search('How to customize the widget?')}
+        >How to customize the widget?</strong
       >"
     </p>
     <p>
