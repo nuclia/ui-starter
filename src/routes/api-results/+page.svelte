@@ -12,7 +12,7 @@
   } from '@nuclia/ui';
   import { onDestroy, onMount } from 'svelte';
 
-  const query = 'How the market will look like in 2023?';
+  const query = 'How the customzie the widget?';
 
   onMount(() => {
     // Setup Nuclia to use your KB and zone
@@ -20,7 +20,7 @@
       {
         backend: 'https://nuclia.cloud/api',
         zone: 'europe-1',
-        knowledgeBox: '16375869-1037-460d-8648-b3ee9c9206c0',
+        knowledgeBox: 'df8b4c24-2807-4888-ad6c-ae97357a638b',
       },
       'PUBLISHED',
       {
